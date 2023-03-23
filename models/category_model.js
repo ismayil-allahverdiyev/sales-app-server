@@ -6,6 +6,10 @@ const categorySchema = mongoose.Schema({
         required: true,
         trim: true
     },
+    coverUrl:{
+        type: String,
+        required: true
+    },
     count: {
         type: Number,
         default: 0

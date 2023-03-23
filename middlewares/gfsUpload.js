@@ -4,7 +4,7 @@ const uuid = require("uuid")
 const multer = require("multer")
 const {GridFsStorage} = require('multer-gridfs-storage');
 
-const DB = "mongodb+srv://isi:1124816%40isi2003@clusteraisha.fgl4fve.mongodb.net/test";
+const DB = process.env.URL;
 
 const storage = new GridFsStorage({
   url: DB,
