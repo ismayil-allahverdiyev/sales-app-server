@@ -1,5 +1,6 @@
 const express = require("express")
 const mongoose = require("mongoose")
+const imageUploadGfs = require("../middlewares/imageGfsUpload")
 const Category = require("../models/category_model")
 
 const categoryRouter = express.Router()
@@ -9,15 +10,22 @@ categoryRouter.get("/categories", async (req, res) =>{
     res.send(categories)
 })
 
-categoryRouter.post("/newCategory", async (req, res) => {
+categoryRouter.post("/newCategory", imageUploadGfs.single("image"), async (req, res) => {
     const{title} = req.body;
     const category = await Category.find({title});
     console.log(category);
     if(!category || category.length == 0){
-        console.log("was empty")
-        const category = Category({"title": title});
-        category.save();
-        res.send(category);
+        const category = Category({
+            "title": title,
+            "coverUrl": ""
+        });
+        if(req.file){
+            category.coverUrl = req.file.filename;
+            category.save();
+            res.send(category);
+        }else{
+            res.send({msg: "No cover image!"})
+        }
     }else{
         res.send("The \"" + title + "\" category already exists")
     }
