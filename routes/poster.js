@@ -7,8 +7,8 @@ const uploadGfs = require("../middlewares/gfsUpload")
 
 const posterRouter = express.Router();
 
-const videoUrl = "http://192.168.57.26:3000/api/videos/"
-const imageUrl = "http://192.168.57.26:3000/api/videos/"
+const videoUrl = "https://aisha-sales-app.herokuapp.com/api/videos/"
+const imageUrl = "https://aisha-sales-app.herokuapp.com/api/images/"
 
 
 posterRouter.get("/api/getAllPostersByTitle", async (req, res)=>{
