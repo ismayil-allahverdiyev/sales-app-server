@@ -5,6 +5,8 @@ const Category = require("../models/category_model")
 
 const categoryRouter = express.Router()
 
+const imageUrl = "https://aisha-sales-app.herokuapp.com/api/images/"
+
 categoryRouter.get("/categories", async (req, res) =>{
     const categories = await Category.find();
     res.send(categories)
@@ -20,7 +22,7 @@ categoryRouter.post("/newCategory", imageUploadGfs.single("image"), async (req, 
             "coverUrl": ""
         });
         if(req.file){
-            category.coverUrl = req.file.filename;
+            category.coverUrl = imageUrl + req.file.filename;
             category.save();
             res.send(category);
         }else{
