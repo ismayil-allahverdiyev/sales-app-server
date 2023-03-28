@@ -2,7 +2,9 @@ const express = require("express");
 const Poster = require("../models/poster_model.js");
 const User = require("../models/user.js");
 const mongoose = require("mongoose")
-const upload = require("../middlewares/upload")
+
+const index = require("../index")
+
 const posterImageUploadGfs = require("../middlewares/posterImageGfsUpload")
 
 const posterRouter = express.Router();
