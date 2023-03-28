@@ -56,7 +56,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         console.log("val " + val);
     })
 
-    if(!categoryExists){
+    if(!categoryExists || categoryExists.length == 0){
         res.status(404).json({
             msg: "Category does not exist!"
         });
@@ -70,6 +70,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         });
     }else{
         console.log(user);
+
         let poster = Poster({
             userId,
             category, 
@@ -77,6 +78,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
             title,
             "image": []
         })
+
         console.log(req.body.image);
         console.log("file " +  req.files[0])
         if(req.files){
