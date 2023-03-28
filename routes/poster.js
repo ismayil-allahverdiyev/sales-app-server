@@ -5,7 +5,8 @@ const mongoose = require("mongoose")
 
 const index = require("../index")
 
-const posterImageUploadGfs = require("../middlewares/posterImageGfsUpload")
+const posterImageUploadGfs = require("../middlewares/posterImageGfsUpload");
+const Category = require("../models/category_model.js");
 
 const posterRouter = express.Router();
 
@@ -16,6 +17,15 @@ const imageUrl = "https://aisha-sales-app.herokuapp.com/api/posterImage/"
 posterRouter.get("/api/getAllPostersByTitle", async (req, res)=>{
     const{category} = req.body;
     console.log(category);
+
+    const categoryExists = await Category.find({title: category})
+
+    if(!categoryExists){
+        res.status(404).json({
+            msg: "Category does not exist!"
+        });
+    }
+
     const poster = await Poster.find({category});
     console.log(poster);
     if(!poster){
