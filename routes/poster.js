@@ -18,16 +18,6 @@ posterRouter.get("/api/getAllPostersByTitle", async (req, res)=>{
     const{category} = req.body;
     console.log(category);
 
-    const categoryExists = await Category.find({title: category})
-
-    console.log(categoryExists);
-
-    if(!categoryExists){
-        res.status(404).json({
-            msg: "Category does not exist!"
-        });
-    }
-
     const poster = await Poster.find({category});
     console.log(poster);
     if(!poster){
@@ -57,6 +47,16 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
     console.log("QUQU")
     const{userId, category, price, title} = req.body;
     console.log(userId);
+
+    const categoryExists = await Category.find({title: category})
+
+    console.log(categoryExists);
+
+    if(!categoryExists){
+        res.status(404).json({
+            msg: "Category does not exist!"
+        });
+    }
     const objId = mongoose.Types.ObjectId(userId)
     const user = await User.findById(userId);
     console.log("objId " + user);
