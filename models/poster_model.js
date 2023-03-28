@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const posterSchema = mongoose.Schema({
-    categorie:{
+    category:{
         type: String,
         required: false,
         trim: true,

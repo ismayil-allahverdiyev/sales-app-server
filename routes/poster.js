@@ -50,7 +50,11 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
 
     const categoryExists = await Category.find({title: category})
 
-    console.log("categoryExists " + categoryExists.toString);
+    console.log("categoryExists " + categoryExists);
+
+    categoryExists.forEach((val) => {
+        console.log("val " + val);
+    })
 
     if(!categoryExists){
         res.status(404).json({
