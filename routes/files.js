@@ -2,7 +2,7 @@ const index = require("../index")
 const express = require("express");
 const mongoose = require("mongoose")
 var Grid = require('gridfs-stream');
-const { any } = require("../middlewares/gfsUpload");
+const { any } = require("../middlewares/posterImageGfsUpload");
 
 const filesRouter = express.Router();
 

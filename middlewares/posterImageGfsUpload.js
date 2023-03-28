@@ -19,12 +19,12 @@ const storage = new GridFsStorage({
         const filename = buf.toString('hex') + path.extname(uuidv4());
         const fileInfo = {
           filename: filename,
-          bucketName: 'uploads'
+          bucketName: 'poster_images'
         };
         resolve(fileInfo);
       });
     });
   }
 });
-const uploadGfs = multer({ storage });
-module.exports = uploadGfs
+const posterImageUploadGfs = multer({ storage });
+module.exports = posterImageUploadGfs

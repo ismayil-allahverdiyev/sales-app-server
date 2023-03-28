@@ -3,18 +3,18 @@ const Poster = require("../models/poster_model.js");
 const User = require("../models/user.js");
 const mongoose = require("mongoose")
 const upload = require("../middlewares/upload")
-const uploadGfs = require("../middlewares/gfsUpload")
+const posterImageUploadGfs = require("../middlewares/posterImageGfsUpload")
 
 const posterRouter = express.Router();
 
 const videoUrl = "https://aisha-sales-app.herokuapp.com/api/videos/"
-const imageUrl = "https://aisha-sales-app.herokuapp.com/api/images/"
+const imageUrl = "https://aisha-sales-app.herokuapp.com/api/poster_images/"
 
 
 posterRouter.get("/api/getAllPostersByTitle", async (req, res)=>{
-    const{categorie} = req.body;
-    console.log(categorie);
-    const poster = await Poster.find({categorie});
+    const{category} = req.body;
+    console.log(category);
+    const poster = await Poster.find({category});
     console.log(poster);
     if(!poster){
         res.status(404).json({
@@ -39,9 +39,9 @@ posterRouter.get("/api/getAllPosters", async (req, res)=>{
     )
 })
 
-posterRouter.post("/api/addPoster", uploadGfs.array("image"), async (req, res)=>{
+posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (req, res)=>{
     console.log("QUQU")
-    const{userId, categorie, price, title} = req.body;
+    const{userId, category, price, title} = req.body;
     console.log(userId);
     const objId = mongoose.Types.ObjectId(userId)
     const user = await User.findById(userId);
@@ -54,7 +54,7 @@ posterRouter.post("/api/addPoster", uploadGfs.array("image"), async (req, res)=>
         console.log(user);
         let poster = Poster({
             userId,
-            categorie, 
+            category, 
             price, 
             title,
             "image": []
@@ -75,34 +75,54 @@ posterRouter.post("/api/addPoster", uploadGfs.array("image"), async (req, res)=>
     }
 })
 
-posterRouter.post("/api/addVideoPoster", uploadGfs.single("video"), async (req, res)=>{
-    const{userId, categorie, price, title} = req.body;
-    console.log(userId);
-    const objId = mongoose.Types.ObjectId(userId)
-    const user = await User.findById(userId);
-    console.log(objId);
-    if(1==0){
-        res.status(404).json({
-            msg: "The current user does not exist!"
-        });
-    }else{
-        console.log(user);
-        let poster = Poster({
-            userId,
-            categorie, 
-            price, 
-            title,
-            "image": ""
+posterRouter.get("/api/posterImage/:filename", (req, res) => {
+    try{
+        const parFilename = req.params.filename
+        console.log(parFilename)
+
+        index.gfs = new mongoose.mongo.GridFSBucket(mongoose.connection, {
+            bucketName: "poster_images"
         })
-        console.log(req.body.video);
-        console.log(videoUrl+req.file.filename)
-        if(req.file){
-            poster.image = videoUrl+req.file.filename
-        }
-        poster = await poster.save();
-        console.log("Poster is " + poster);
-        res.json(poster);
+
+        const file = index.gfs.openDownloadStreamByName(parFilename);
+        file.on("error", function(err){
+            res.send("No image found with the given id!")
+        });
+        file.pipe(res)
+    }catch(e){
+        console.log(e)
+        res.send(e)
     }
 })
+
+// posterRouter.post("/api/addVideoPoster", uploadGfs.single("video"), async (req, res)=>{
+//     const{userId, categorie, price, title} = req.body;
+//     console.log(userId);
+//     const objId = mongoose.Types.ObjectId(userId)
+//     const user = await User.findById(userId);
+//     console.log(objId);
+//     if(1==0){
+//         res.status(404).json({
+//             msg: "The current user does not exist!"
+//         });
+//     }else{
+//         console.log(user);
+//         let poster = Poster({
+//             userId,
+//             categorie, 
+//             price, 
+//             title,
+//             "image": ""
+//         })
+//         console.log(req.body.video);
+//         console.log(videoUrl+req.file.filename)
+//         if(req.file){
+//             poster.image = videoUrl+req.file.filename
+//         }
+//         poster = await poster.save();
+//         console.log("Poster is " + poster);
+//         res.json(poster);
+//     }
+// })
 
 module.exports = posterRouter;
