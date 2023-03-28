@@ -29,10 +29,10 @@ categoryRouter.post("/newCategory", imageUploadGfs.single("image"), async (req, 
             category.save();
             res.send(category);
         }else{
-            res.send({msg: "No cover image!"})
+            res.statusCode(422).send({msg: "No cover image!"})
         }
     }else{
-        res.send("The \"" + title + "\" category already exists")
+        res.statusCode(409).send("The \"" + title + "\" category already exists")
     }
 })
 
