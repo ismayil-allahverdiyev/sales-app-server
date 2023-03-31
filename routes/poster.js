@@ -91,7 +91,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         }
         poster = await poster.save();
         console.log("Poster is " + poster);
-        res.json(poster);
+//         res.json(poster);
     }
 })
 
