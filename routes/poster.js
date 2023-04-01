@@ -48,7 +48,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
     const{userId, category, price, title} = req.body;
     console.log(userId);
 
-    const categoryExists = await Category.findOne({title: category})
+    const categoryExists = await Category.findOne({title: category}).exec()
 
     console.log("categoryExists " + categoryExists);
 
