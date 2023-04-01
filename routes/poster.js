@@ -52,11 +52,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
 
     console.log("categoryExists " + categoryExists);
 
-    categoryExists.forEach((val) => {
-        console.log("val " + val);
-    })
-
-    if(!categoryExists || categoryExists.length == 0){
+    if(!categoryExists){
         res.status(404).json({
             msg: "Category does not exist!"
         });
