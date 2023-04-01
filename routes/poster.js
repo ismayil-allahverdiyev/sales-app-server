@@ -86,6 +86,23 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
             poster.image = images
         }
         poster = await poster.save();
+
+        if(poster){
+            const newCatVal = await Category.findOneAndUpdate(
+                {title: category},
+                {$inc : {count: 1}},
+                {new: true },
+                function(err, response) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        callback(response);
+                    }
+                }
+            )
+            console.log("New category: " + newCatVal)
+        }
+
         console.log("Poster is " + poster);
 //         res.json(poster);
     }
