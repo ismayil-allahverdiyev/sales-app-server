@@ -59,7 +59,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
     }
 
     const user = await User.findById(userId);
-    console.log("objId " + categoryExists.count);
+    console.log("objId " + categoryExists);
     if(!user){
         res.status(404).json({
             msg: "The current user does not exist!"
