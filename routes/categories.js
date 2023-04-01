@@ -2,7 +2,6 @@ const express = require("express")
 const mongoose = require("mongoose")
 
 const index = require("../index")
-
 const imageUploadGfs = require("../middlewares/imageGfsUpload")
 const Category = require("../models/category_model")
 
