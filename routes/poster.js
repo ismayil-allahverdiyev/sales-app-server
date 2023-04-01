@@ -61,9 +61,9 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
             msg: "Category does not exist!"
         });
     }
-    const objId = mongoose.Types.ObjectId(userId)
+
     const user = await User.findById(userId);
-    console.log("objId " + user);
+    console.log("objId " + categoryExists.count);
     if(!user){
         res.status(404).json({
             msg: "The current user does not exist!"
