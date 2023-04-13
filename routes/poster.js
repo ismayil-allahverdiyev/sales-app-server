@@ -51,14 +51,14 @@ posterRouter.get("/api/getPostersByCategory", async (req, res)=>{
     const categoryExists = await Category.findOne({title})
 
     if(!categoryExists){
-        res.status(404).json({
+        res.statusCode(404).json({
             msg: "Category does not exist!"
         });
     }
     const poster = await Poster.find({"category": title});
     console.log(poster);
     if(!poster){
-        res.status(404).json({
+        res.statusCode(404).json({
             msg: "List is empty!"
         });
     }else{
