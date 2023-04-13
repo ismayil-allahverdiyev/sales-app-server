@@ -61,10 +61,12 @@ posterRouter.get("/api/getPostersByCategory", async (req, res)=>{
         res.status(404).json({
             msg: "List is empty!"
         });
+    }else{
+        res.json(
+            poster
+        )
     }
-    res.json(
-        poster
-    )
+    
 })
 
 posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (req, res)=>{
