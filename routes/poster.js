@@ -52,23 +52,23 @@ posterRouter.get("/api/getPostersByCategory", async (req, res)=>{
 
     if(!categoryExists){
         res.status(404)
-        res.send({
+        res.json({
             msg: "Category does not exist!"
         });
-    }
-    const poster = await Poster.find({"category": title});
-    console.log(poster);
-    if(!poster){
-        res.status(404)
-        res.send({
-            msg: "List is empty!"
-        });
     }else{
-        res.send(
-            poster
-        )
+        const poster = await Poster.find({"category": title});
+        console.log(poster);
+        if(!poster){
+            res.status(404)
+            res.json({
+                msg: "List is empty!"
+            });
+        }else{
+            res.json(
+                poster
+            )
+        }
     }
-    
 })
 
 posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (req, res)=>{
