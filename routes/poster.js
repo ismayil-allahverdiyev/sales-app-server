@@ -49,6 +49,7 @@ posterRouter.get("/api/getPostersByCategory", async (req, res)=>{
     console.log("req.body " + title);
 
     const categoryExists = await Category.findOne({title})
+    console.log("categoryExists " + categoryExists)
 
     if(!categoryExists){
         res.status(404)
