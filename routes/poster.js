@@ -52,7 +52,7 @@ posterRouter.get("/api/getPostersByCategory", async (req, res)=>{
 
     if(!categoryExists){
         res.status(404)
-        res.json({
+        res.send({
             msg: "Category does not exist!"
         });
     }
@@ -60,11 +60,11 @@ posterRouter.get("/api/getPostersByCategory", async (req, res)=>{
     console.log(poster);
     if(!poster){
         res.status(404)
-        res.json({
+        res.send({
             msg: "List is empty!"
         });
     }else{
-        res.json(
+        res.send(
             poster
         )
     }
