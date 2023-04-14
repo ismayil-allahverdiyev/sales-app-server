@@ -43,7 +43,7 @@ posterRouter.get("/api/getAllPosters", async (req, res)=>{
     )
 })
 
-posterRouter.get("/api/getPostersByCategory", async (req, res)=>{
+posterRouter.post("/api/getPostersByCategory", async (req, res)=>{
 
     const{title} = req.body;
     console.log("req.body " + title);
