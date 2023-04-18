@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 var Grid = require('gridfs-stream');
 const authRouter = require("./routes/auth.js");
 const posterRouter = require("./routes/poster.js");
-
+const commentsRouter = require("./routes/comments.js")
 const filesRouter = require("./routes/files");
 const categoryRouter = require("./routes/categories");
 
@@ -41,6 +41,7 @@ app.use(authRouter);
 app.use(filesRouter);
 app.use(posterRouter);
 app.use(categoryRouter);
+app.use(commentsRouter);
 
 app.get("/hi", (req, res) => {
     res.send("aaa")
