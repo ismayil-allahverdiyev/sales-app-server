@@ -18,6 +18,8 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 
     const user = await User.findOne({email});
 
+    console.log(user);
+
     const compared = await bcryptjs.compare(token, user.password);
 
     if(!compared){
