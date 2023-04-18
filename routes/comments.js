@@ -18,9 +18,7 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 
     const user = await User.findOne({email});
 
-    console.log(user);
-
-    const compared = await bcryptjs.compare(token, user.password);
+    // const compared = await bcryptjs.compare(token, user.password);
 
     if(!compared){
         return res.status(400).json({
@@ -34,7 +32,7 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 
         let comment = Comment({
             description,
-            "userId" : user.userId,
+            "userId" : "user.userId",
             "username" : "User Userov",
             "date" : date.toString(),
         });
