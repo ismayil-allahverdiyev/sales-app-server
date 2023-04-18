@@ -20,8 +20,9 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 
     // const compared = await bcryptjs.compare(token, user.password);
 
-    if(!compared){
-        return res.status(400).json({
+    // if(!compared){
+    if(false){
+            return res.status(400).json({
             msg: "Incorrect password!"
         });
     }
