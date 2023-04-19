@@ -15,20 +15,22 @@ const categoryRouter = require("./routes/categories");
 
 const app = express();
 
-app.get("/beyza", (req, res) => {
-  console.log("Beyzayla test!");
+app.post("/beyza", (req, res) => {
+  const{name, surname, isMarried} = req.body;
+  const name1 = req.body["name"];
+  const surname1 = req.body["surname"];
+  const isMarried1 = req.body["isMarried"]
+  console.log("");
 
   res.send({
-    "name": "Beyza",
-    "surname": "Gonculer",
+    "name": name,
+    "surname": surname,
     "id": 1,
-    "isMarried": false,
-    "schoolData": {
-      "name": "AGU",
-      "location": "Kayseri",
-      "year": 3,
-      "gpa": 2.86,
-      "isFinished": false
+    "isMarried": isMarried,
+    "secondary": {
+      "name1": name1,
+      "surname1": surname1,
+      "isMarried1": isMarried1
     }
   })
 })
