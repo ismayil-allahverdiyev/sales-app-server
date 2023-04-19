@@ -15,6 +15,24 @@ const categoryRouter = require("./routes/categories");
 
 const app = express();
 
+app.get("/beyza", (req, res) => {
+  console.log("Beyzayla test!");
+
+  res.send({
+    "name": "Beyza",
+    "surname": "Gonculer",
+    "id": 1,
+    "isMarried": false,
+    "schoolData": {
+      "name": "AGU",
+      "location": "Kayseri",
+      "year": 3,
+      "gpa": 2.86,
+      "isFinished": false
+    }
+  })
+})
+
 let db;
 
 const connectDatabase = async () => {
