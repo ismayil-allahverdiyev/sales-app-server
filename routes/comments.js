@@ -16,7 +16,7 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
         description
     });
 
-    const user = authController.jwtVerifier(token);
+    const user = await authController.jwtVerifier(token);
 
     console.log("Comparison is " + user)
 
