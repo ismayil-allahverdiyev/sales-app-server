@@ -14,13 +14,11 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
         description
     });
 
+    const verified = await jwt.verify(token, "passwordKey");
 
+    const user = await User.findById(verified.id);
 
-    const user = await User.findOne({email});
-
-    const compared = await jwt.verify(token, "passwordKey");
-
-    console.log("Comparison is " + compared)
+    console.log("Comparison is " + user)
 
     if(false){
             return res.status(400).json({
