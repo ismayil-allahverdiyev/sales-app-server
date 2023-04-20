@@ -37,9 +37,11 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
             "date" : date.toString(),
         });
 
+        console.log("comment is " + comment);
+
         comment = await comment.save();
 
-        console.log("comment is " + comment);
+        console.log("saved comment is " + comment);
 
         return res.status(200).json(comment);
     } catch (error) {
