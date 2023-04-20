@@ -18,9 +18,10 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 
     const user = await User.findOne({email});
 
-    // const compared = await bcryptjs.compare(token, user.password);
+    const compared = await bcryptjs.compare(token, user.password);
 
-    // if(!compared){
+    console.log("Comparison is " + compared);
+
     if(false){
             return res.status(400).json({
             msg: "Incorrect password!"
