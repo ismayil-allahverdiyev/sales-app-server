@@ -20,9 +20,9 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 
     console.log("Comparison is " + user)
 
-    if(false){
+    if(!user){
             return res.status(400).json({
-            msg: "Incorrect password!"
+            msg: "User not found!"
         });
     }
 
@@ -32,17 +32,16 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 
         let comment = Comment({
             description,
-            "userId" : "user.userId",
-            "username" : "User Userov",
+            "userId" : user.id,
+            "username" : user.name,
             "date" : date.toString(),
         });
 
-        return res.status(200).json({
-            token,
-            description,
-            user,
-            comment
-        });
+        comment = await comment.save();
+
+        console.log("comment is " + comment);
+
+        return res.status(200).json(comment);
     } catch (error) {
         return res.status(400).send(error);
     }
