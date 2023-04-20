@@ -4,6 +4,8 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const Comment = require("../models/comment_model");
 
+const authController = require("../controllers/auth_controller");
+
 const commentsRouter = express.Router();
 
 commentsRouter.post("/comments/addComment", async (req, res) => {
@@ -14,9 +16,7 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
         description
     });
 
-    const verified = await jwt.verify(token, "passwordKey");
-
-    const user = await User.findById(verified.id);
+    const user = authController.jwtVerifier(token);
 
     console.log("Comparison is " + user)
 
