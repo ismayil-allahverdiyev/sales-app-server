@@ -12,6 +12,10 @@ const commentSchema = mongoose.Schema({
     userImage : {
         type : String,
     },
+    posterId : {
+        type : String,
+        required : true,
+    },
     date : {
         type : String,
         required : true,

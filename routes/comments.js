@@ -5,23 +5,27 @@ const jwt = require("jsonwebtoken");
 const Comment = require("../models/comment_model");
 
 const authController = require("../controllers/auth_controller");
+const Poster = require("../models/poster_model");
 
 const commentsRouter = express.Router();
 
 commentsRouter.post("/comments/addComment", async (req, res) => {
-    const {token, email, description} = req.body;
+    const {token, email, description, posterId} = req.body;
 
-    console.log({
-        token,
-        description
-    });
+    const poster = await Poster.findById(posterId);
+
+    if(!poster){
+        return res.status(400).json({
+            msg: "Poster not found!"
+        });
+    }
 
     const user = await authController.jwtVerifier(token);
 
     console.log("Comparison is " + user)
 
     if(!user){
-            return res.status(400).json({
+        return res.status(400).json({
             msg: "User not found!"
         });
     }
@@ -35,6 +39,7 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
             "userId" : user.id,
             "username" : user.name,
             "date" : date.toString(),
+            "posterId" : poster.id,
         });
 
         console.log("comment is " + comment);
