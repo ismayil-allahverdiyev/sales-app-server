@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const User = require("../models/user");
-const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const Comment = require("../models/comment_model");
 
 const commentsRouter = express.Router();
@@ -18,9 +18,9 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 
     const user = await User.findOne({email});
 
-    const compared = await bcryptjs.compare(token, user.password);
+    const compared = await jwt.verify(token, "passwordKey");
 
-    console.log("Comparison is " + compared);
+    console.log("Comparison is " + compared)
 
     if(false){
             return res.status(400).json({
