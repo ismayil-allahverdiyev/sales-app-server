@@ -14,7 +14,7 @@ const categoryRouter = require("./routes/categories");
 
 const app = express();
 
-const client = new MongoClient(DB);
+const client = MongoClient(DB);
 
 const connectDatabase = async () => {
     try {      
