@@ -61,13 +61,13 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
                 msg: "Poster not found!"
             });
         }
+        res.json(poster)
+
     }catch(e){
         return res.status(400).json({
             err: e
         })
     }
-
-    res.json(poster)
 })
 
 module.exports = commentsRouter;
