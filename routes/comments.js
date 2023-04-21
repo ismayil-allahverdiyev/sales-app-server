@@ -71,7 +71,7 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
                 }
             }
         ]
-
+        mongoose.Mongoose.db
         await monitoringComments(mongoose, pipe);
 
         
