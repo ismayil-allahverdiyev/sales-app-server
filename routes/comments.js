@@ -54,11 +54,17 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 commentsRouter.get("/comments/getCommentsById", async (req, res) => {
     const posterId = req.query.posterId;
 
-    const poster = await Poster.findById(posterId);
-    if(!poster){
+    try{
+        const poster = await Poster.findById(posterId);
+        if(!poster){
+            return res.status(400).json({
+                msg: "Poster not found!"
+            });
+        }
+    }catch(e){
         return res.status(400).json({
-            msg: "Poster not found!"
-        });
+            err: e
+        })
     }
 
     res.json(poster)
