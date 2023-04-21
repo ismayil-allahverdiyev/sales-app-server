@@ -4,7 +4,7 @@ const DB = process.env.URL;
 
 const express = require("express");
 const mongoose = require("mongoose");
-const MongoClient = require("mongodb");
+const { MongoClient } = require("mongodb");
 var Grid = require('gridfs-stream');
 const authRouter = require("./routes/auth.js");
 const posterRouter = require("./routes/poster.js");
