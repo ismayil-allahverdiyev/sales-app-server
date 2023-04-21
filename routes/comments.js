@@ -1,7 +1,4 @@
-const mongoose = require("mongoose");
 const express = require("express");
-const User = require("../models/user");
-const jwt = require("jsonwebtoken");
 const Comment = require("../models/comment_model");
 
 const authController = require("../controllers/auth_controller");
@@ -52,6 +49,11 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
     } catch (error) {
         return res.status(400).send(error);
     }
+})
+
+commentsRouter.get("/comments/getCommentsById", (req, res) => {
+    const{posterId} = req.params;
+    res.send(posterId)
 })
 
 module.exports = commentsRouter;
