@@ -52,8 +52,9 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 })
 
 commentsRouter.get("/comments/getCommentsById", (req, res) => {
-    const posterId = req.params.posterId;
-    console.log("posterId " + req.params.posterId);
+    const posterId = req.query.posterId;
+    const {posterId2} = req.query;
+    console.log("posterId " + posterId + posterId2);
     res.json(posterId)
 })
 
