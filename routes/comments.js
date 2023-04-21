@@ -104,6 +104,8 @@ async function monitoringComments(client, pipeline = []) {
         if(changeStream.closed){
             console.log("The change stream is closed");
         }else{
+            console.log(e);
+            req.json(e);
             throw e;
         }
     }
