@@ -56,7 +56,7 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 commentsRouter.get("/comments/getCommentsById", async (req, res) => {
     const posterId = req.query.posterId;
 
-    try{
+    // try{
         console.log("Try catch")
         const poster = await Poster.findById("64281cfa067266a6aaad834a");
         console.log("Poster 1")
@@ -85,11 +85,11 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
 
         
 
-    }catch(e){
-        return res.status(400).json({
-            err: e
-        })
-    }
+    // }catch(e){
+    //     return res.status(400).json({
+    //         err: e
+    //     })
+    // }
 })
 
 async function monitoringComments(client, pipeline = []) {
