@@ -57,12 +57,17 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
     const posterId = req.query.posterId;
 
     try{
+        console.log("Try catch")
         const poster = await Poster.findById(posterId);
+        console.log("Poster 1")
+
         if(!poster){
             return res.status(400).json({
                 msg: "Poster not found!"
             });
         }
+        console.log("Poster 2")
+
 
         const pipe = [
             {
@@ -72,6 +77,9 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
                 }
             }
         ]
+
+        console.log("Pipe ")
+
         // mongoose.Mongoose.db
         await monitoringComments(index.client, pipe);
 
