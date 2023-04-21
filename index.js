@@ -4,7 +4,6 @@ const DB = process.env.URL;
 
 const express = require("express");
 const mongoose = require("mongoose");
-const { MongoClient } = require("mongodb");
 var Grid = require('gridfs-stream');
 const authRouter = require("./routes/auth.js");
 const posterRouter = require("./routes/poster.js");
@@ -14,11 +13,10 @@ const categoryRouter = require("./routes/categories");
 
 const app = express();
 
-const client = new MongoClient(DB);
 
 const connectDatabase = async () => {
     try {      
-      await client.connect();
+      await mongoose.connect(DB);
   
       console.log("connected to database");
     } catch (error) {
@@ -50,6 +48,4 @@ app.listen(PORT, "", function (){
     console.log(`Connected to ${PORT}`);
 });
 
-module.exports = {
-  client
-}
+// module.exports = {gfs}
