@@ -13,7 +13,7 @@ const categoryRouter = require("./routes/categories");
 
 const app = express();
 
-let db;
+
 
 const connectDatabase = async () => {
     try {      
@@ -44,9 +44,5 @@ app.use(commentsRouter);
 app.get("/hi", (req, res) => {
     res.send("aaa")
 })
-
-app.listen(PORT, "", function (){
-    console.log(`Connected to ${PORT}`);
-});
 
 // module.exports = {gfs}
