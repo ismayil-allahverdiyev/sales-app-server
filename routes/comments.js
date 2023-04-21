@@ -1,5 +1,6 @@
 const express = require("express");
 const Comment = require("../models/comment_model");
+const index = require("../index")
 
 const authController = require("../controllers/auth_controller");
 const Poster = require("../models/poster_model");
@@ -71,8 +72,8 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
                 }
             }
         ]
-        mongoose.Mongoose.db
-        await monitoringComments(mongoose, pipe);
+        // mongoose.Mongoose.db
+        await monitoringComments(index.client, pipe);
 
         
 
