@@ -3,6 +3,7 @@ const Comment = require("../models/comment_model");
 
 const authController = require("../controllers/auth_controller");
 const Poster = require("../models/poster_model");
+const { default: mongoose } = require("mongoose");
 
 const commentsRouter = express.Router();
 
@@ -61,7 +62,23 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
                 msg: "Poster not found!"
             });
         }
-        res.json(poster)
+
+        const comments = await Comment.find({
+            "posterId": poster.id,
+        });
+
+        const pipe = [
+            {
+                "$match" : {
+                    "operationType" : "insert",
+                    "fullDocument.posterId" : poster.id,
+                }
+            }
+        ]
+
+        monitoringComments(mongoose, pipe);
+
+        
 
     }catch(e){
         return res.status(400).json({
@@ -69,5 +86,23 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
         })
     }
 })
+
+async function monitoringComments(client, pipeline = []) {
+    const collection = client.db("test").collection("comments");
+
+    const changeStream = collection.watch(pipeline);
+
+    try{
+        while(await changeStream.hasNext()){
+            console.log(await changeStream.next());
+        }
+    }catch(e){
+        if(changeStream.closed){
+            console.log("The change stream is closed");
+        }else{
+            throw e;
+        }
+    }
+}
 
 module.exports = commentsRouter;
