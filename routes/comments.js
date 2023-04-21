@@ -63,10 +63,6 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
             });
         }
 
-        const comments = await Comment.find({
-            "posterId": poster.id,
-        });
-
         const pipe = [
             {
                 "$match" : {
@@ -88,12 +84,20 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
 })
 
 async function monitoringComments(client, pipeline = []) {
+
+    console.log("in the monitoring");
     const collection = client.db("test").collection("comments");
+    console.log("collection added");
 
     const changeStream = collection.watch(pipeline);
+    console.log("changeStream added");
 
     try{
+        console.log("trying changeStream hasnext");
+
         while(await changeStream.hasNext()){
+            console.log("has hasnext");
+
             console.log(await changeStream.next());
         }
     }catch(e){
