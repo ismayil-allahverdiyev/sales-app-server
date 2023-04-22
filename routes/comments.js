@@ -80,10 +80,10 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
 
         console.log("Pipe ")
 
-        // mongoose.connection.db("test").collection
+        Comment.collection
 
         // mongoose.Mongoose.db
-        await monitoringComments(mongoose.connection, pipe);
+        await monitoringComments(Comment.collection, pipe);
 
         
 
@@ -97,7 +97,7 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
 async function monitoringComments(client, pipeline = []) {
 
     console.log("in the monitoring");
-    const collection = client.db("test").collection("comments");
+    const collection = client;
     console.log("collection added");
 
     const changeStream = collection.watch(pipeline);
