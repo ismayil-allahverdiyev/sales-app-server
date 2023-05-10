@@ -69,7 +69,7 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
         
         const comments = await Comment.find({"posterId" : poster.id})
 
-        return comments
+        return res.status(200).json(comments)
     }catch(e){
         return res.status(400).json({
             err: e
