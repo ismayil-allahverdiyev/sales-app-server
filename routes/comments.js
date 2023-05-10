@@ -66,27 +66,10 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
                 msg: "Poster not found!"
             });
         }
-        console.log("Poster 2")
-
-
-        const pipe = [
-            {
-                "$match" : {
-                    "operationType" : "insert",
-                    "fullDocument.posterId" : poster.id,
-                }
-            }
-        ]
-
-        console.log("Pipe ")
-
-        Comment.collection
-
-        // mongoose.Mongoose.db
-        await monitoringComments(Comment.collection, pipe);
-
         
+        const comments = await Comment.find({"posterId" : poster.id})
 
+        return comments
     }catch(e){
         return res.status(400).json({
             err: e
