@@ -58,7 +58,7 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
 
     try{
         console.log("Try catch")
-        const poster = await Poster.findById("64281cfa067266a6aaad834a");
+        const poster = await Poster.findById(posterId);
         console.log(poster.id)
 
         if(!poster){
