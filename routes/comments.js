@@ -10,6 +10,7 @@ const commentsRouter = express.Router();
 
 commentsRouter.post("/comments/addComment", async (req, res) => {
     const {token, email, description, posterId} = req.body;
+    console.log("posterId is " + posterId);
 
     const poster = await Poster.findById(posterId);
 
