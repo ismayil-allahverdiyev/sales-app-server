@@ -11,6 +11,7 @@ const commentSchema = mongoose.Schema({
     },
     userImage : {
         type : String,
+        default: ""
     },
     posterId : {
         type : String,

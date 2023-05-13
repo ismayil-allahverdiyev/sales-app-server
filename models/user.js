@@ -26,6 +26,10 @@ const userScheme = mongoose.Schema({
         type: String,
         default: ""
     },
+    imageUrl: {
+        type: String,
+        default: ""
+    },
     type: {
         type: String,
         default: "user"

@@ -37,6 +37,7 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
             description,
             "userId" : user.id,
             "username" : user.name,
+            "userImage" : user.imageUrl,
             "date" : date.toString(),
             "posterId" : poster.id,
         });
