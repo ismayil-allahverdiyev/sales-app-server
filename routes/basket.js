@@ -30,6 +30,8 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
         description: poster.title,
         price: poster.price,
     }
+    console.log("Basket includes " + user.basket);
+    console.log("Is in there " + user.basket.includes(posterInfo));
     if(user.basket.includes(posterInfo)){
         return res.json({
             msg: "Poster found in the basket!",
