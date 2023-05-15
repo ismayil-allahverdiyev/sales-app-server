@@ -39,3 +39,5 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
 
     return res.json(updatedUser)
 })
+
+module.exports = basketRouter;
