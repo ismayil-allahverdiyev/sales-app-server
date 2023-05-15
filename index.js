@@ -50,5 +50,3 @@ app.get("/hi", (req, res) => {
 app.listen(PORT, "", function (){
     console.log(`Connected to ${PORT}`);
 });
-
-// module.exports = {gfs}

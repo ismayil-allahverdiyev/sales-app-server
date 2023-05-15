@@ -25,14 +25,20 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
         })
     }
 
+    const posterInfo = {
+        id: poster.id,
+        description: poster.title,
+        price: poster.price,
+    }
+    if(user.basket.includes(posterInfo)){
+        return res.json({
+            msg: "Poster found in the basket!",
+        })
+    }
     const updatedUser = await User.findOneAndUpdate(
         {id: user.id},
         {$push: {
-            basket: {
-                id: poster.id,
-                description: poster.title,
-                price: poster.price,
-                }
+            basket: posterInfo
             },
         },
     )
