@@ -18,6 +18,10 @@ const userScheme = mongoose.Schema({
             message: "Please enter a valid email address"
         }
     },
+    basket: {
+        type: Array,
+        default: []
+    },
     password: {
         type: String,
         required: true
