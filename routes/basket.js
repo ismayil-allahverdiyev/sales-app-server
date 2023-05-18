@@ -32,11 +32,7 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
     }
     console.log("Basket includes " + user.basket);
     console.log("Is in there " + user.basket.includes(posterInfo));
-    if(user.basket.includes(posterInfo)){
-        return res.json({
-            msg: "Poster found in the basket!",
-        })
-    }
+    
     const updatedUser = await user.update(
         
         {$push: {
@@ -45,14 +41,6 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
         },
     )
     console.log("Update is " + updatedUser)
-    // const updatedUser = await User.findOneAndUpdate(
-    //     {id: user.id},
-    //     {$push: {
-    //         basket: posterInfo
-    //         },
-    //     },
-    // )
-
     return res.json(updatedUser)
 })
 
