@@ -68,7 +68,7 @@ basketRouter.post("/basket/removeFromBasket", async (req, res) => {
         description: poster.title,
         price: poster.price,
     }
-    console.log("Basket includes " + user.basket);
+    console.log("Basket includes " + user.basket[0] + "\nPosterinfo " + posterInfo);
     console.log("Is in there " + user.basket.includes({
         id: '64281cfa067266a6aaad834a',
         description: 'Nature 1',
