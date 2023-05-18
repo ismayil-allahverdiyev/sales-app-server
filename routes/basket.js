@@ -34,7 +34,7 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
     console.log("Basket includes " + user.basket.length);
 
     for(const basketPoster in user.basket){
-        console.log("basketPoster id is " + basketPoster["id"])
+        console.log("basketPoster id is " + JSON.stringify(basketPoster["id"]))
         console.log("poster id is " + poster.id)
 
         console.log("checked " + (basketPoster["id"] == poster.id))
