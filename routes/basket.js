@@ -32,23 +32,19 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
     }
     
     console.log("new Basket includes " + user["basket"]);
-
+    console.log("new Is in there " + user["basket"].includes({
+        id: '64281cfa067266a6aaad834a',
+        description: 'Nature 1',
+        price: '45.0'
+    },));
     for(const basketPoster of user["basket"]){
-        console.log("basketPoster id is " + JSON.stringify(basketPoster))
-        console.log("poster id is " + poster.id)
-
-        console.log("checked " + (basketPoster["id"] == poster.id))
         if(basketPoster["id"] == poster.id){
             return res.status(400).json({
                 msg: "Poster already in the basket!",
             })
         }
     }
-    console.log("new Is in there " + user["basket"].includes({
-        id: '64281cfa067266a6aaad834a',
-        description: 'Nature 1',
-        price: '45.0'
-    },));
+    
     
     const updatedUser = await user.updateOne(
         
