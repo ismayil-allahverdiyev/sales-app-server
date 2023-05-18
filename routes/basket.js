@@ -31,12 +31,6 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
         price: poster.price,
     }
     
-    console.log("new Basket includes " + user["basket"]);
-    console.log("new Is in there " + user["basket"].includes({
-        id: '64281cfa067266a6aaad834a',
-        description: 'Nature 1',
-        price: '45.0'
-    },));
     for(const basketPoster of user["basket"]){
         if(basketPoster["id"] == poster.id){
             return res.status(400).json({
@@ -53,7 +47,6 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
             },
         },
     )
-    console.log("Update is " + updatedUser)
     return res.json(updatedUser)
 })
 
@@ -61,7 +54,6 @@ basketRouter.post("/basket/removeFromBasket", async (req, res) => {
     const {token, posterId} = req.body
 
     const user = await jwtVerifier(token)
-    console.log("USER is " + user.basket.length)
     if(!user){
         return res.status(400).json({
             msg: "User not found!",
@@ -81,12 +73,6 @@ basketRouter.post("/basket/removeFromBasket", async (req, res) => {
         description: poster.title,
         price: poster.price,
     }
-    console.log("Basket includes " + user.basket[0] + "\nPosterinfo " + posterInfo);
-    console.log("Is in there " + user.basket.includes({
-        id: '64281cfa067266a6aaad834a',
-        description: 'Nature 1',
-        price: '45.0'
-    },));
     
     const updatedUser = await user.updateOne(
         
@@ -95,7 +81,6 @@ basketRouter.post("/basket/removeFromBasket", async (req, res) => {
             },
         },
     )
-    console.log("Update is " + updatedUser)
     return res.json(updatedUser)
 })
 
