@@ -33,7 +33,7 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
     
     console.log("new Basket includes " + user["basket"]);
 
-    for(const basketPoster in user["basket"]){
+    for(const basketPoster of user["basket"]){
         console.log("basketPoster id is " + JSON.stringify(basketPoster))
         console.log("poster id is " + poster.id)
 
