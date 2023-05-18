@@ -38,11 +38,12 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
         })
     }
     const updatedUser = await user.update(
-        {id: user.id},
+        
         {$push: {
             basket: posterInfo
             },
         },
+        done
     )
     console.log("Update is " + updatedUser)
     // const updatedUser = await User.findOneAndUpdate(
