@@ -31,9 +31,9 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
         price: poster.price,
     }
     
-    console.log("Basket includes " + user["basket"]);
+    console.log("new Basket includes " + user["basket"]);
 
-    for(const basketPoster in user.basket){
+    for(const basketPoster in user["basket"]){
         console.log("basketPoster id is " + JSON.stringify(basketPoster["id"]))
         console.log("poster id is " + poster.id)
 
@@ -44,7 +44,7 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
             })
         }
     }
-    console.log("Is in there " + user["basket"].includes({
+    console.log("new Is in there " + user["basket"].includes({
         id: '64281cfa067266a6aaad834a',
         description: 'Nature 1',
         price: '45.0'
