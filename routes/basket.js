@@ -69,7 +69,11 @@ basketRouter.post("/basket/removeFromBasket", async (req, res) => {
         price: poster.price,
     }
     console.log("Basket includes " + user.basket);
-    console.log("Is in there " + user.basket.includes(posterInfo));
+    console.log("Is in there " + user.basket.includes({
+        id: '64281cfa067266a6aaad834a',
+        description: 'Nature 1',
+        price: '45.0'
+    },));
     
     const updatedUser = await user.update(
         
