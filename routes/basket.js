@@ -37,13 +37,20 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
             msg: "Poster found in the basket!",
         })
     }
-    const updatedUser = await User.findOneAndUpdate(
+    const updatedUser = await user.update(
         {id: user.id},
         {$push: {
             basket: posterInfo
             },
         },
     )
+    // const updatedUser = await User.findOneAndUpdate(
+    //     {id: user.id},
+    //     {$push: {
+    //         basket: posterInfo
+    //         },
+    //     },
+    // )
 
     return res.json(updatedUser)
 })
