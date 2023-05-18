@@ -43,7 +43,6 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
             basket: posterInfo
             },
         },
-        done
     )
     console.log("Update is " + updatedUser)
     // const updatedUser = await User.findOneAndUpdate(
