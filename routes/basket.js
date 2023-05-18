@@ -36,6 +36,8 @@ basketRouter.post("/basket/addToBasket", async (req, res) => {
     for(const basketPoster in user.basket){
         console.log("basketPoster id is " + basketPoster["id"])
         console.log("poster id is " + poster.id)
+
+        console.log("checked " + (basketPoster["id"] == poster.id))
         if(basketPoster["id"] == poster.id){
             return res.status(400).json({
                 msg: "Poster already in the basket!",
