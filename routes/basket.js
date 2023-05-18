@@ -48,7 +48,7 @@ basketRouter.post("/basket/removeFromBasket", async (req, res) => {
     const {token, posterId} = req.body
 
     const user = await jwtVerifier(token)
-    console.log("USER is " + user)
+    console.log("USER is " + user.basket.length)
     if(!user){
         return res.status(400).json({
             msg: "User not found!",
