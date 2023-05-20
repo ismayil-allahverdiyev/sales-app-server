@@ -15,118 +15,142 @@ const imageUrl = "https://aisha-sales-app.herokuapp.com/api/posterImage/"
 
 
 posterRouter.get("/api/getAllPostersByTitle", async (req, res)=>{
-    const{category} = req.body;
-    console.log(category);
+    try{
+        const{category} = req.body;
+        console.log(category);
 
-    const poster = await Poster.find({category});
-    console.log(poster);
-    if(!poster){
-        res.status(404).json({
-            msg: "List is empty!"
-        });
+        const poster = await Poster.find({category});
+        console.log(poster);
+        if(!poster){
+            res.status(404).json({
+                msg: "List is empty!"
+            });
+        }
+        res.json(
+            poster
+        )
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
     }
-    res.json(
-        poster
-    )
 })
 
 posterRouter.get("/api/getAllPosters", async (req, res)=>{
-    const poster = await Poster.find({});
-    console.log(poster);
-    if(!poster){
-        res.status(404).json({
-            msg: "List is empty!"
-        });
+    try{
+        const poster = await Poster.find({});
+        console.log(poster);
+        if(!poster){
+            res.status(404).json({
+                msg: "List is empty!"
+            });
+        }
+        res.json(
+            poster
+        )
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
     }
-    res.json(
-        poster
-    )
 })
 
 posterRouter.post("/api/getPostersByCategory", async (req, res)=>{
 
-    const{title} = req.body;
-    console.log("req.body " + title);
+    try{
+        const{title} = req.body;
+        console.log("req.body " + title);
 
-    const categoryExists = await Category.findOne({title})
-    console.log("categoryExists " + categoryExists)
+        const categoryExists = await Category.findOne({title})
+        console.log("categoryExists " + categoryExists)
 
-    if(!categoryExists){
-        res.status(404)
-        res.json({
-            msg: "Category does not exist!"
-        });
-    }else{
-        const poster = await Poster.find({"category": title});
-        console.log(poster);
-        if(!poster){
+        if(!categoryExists){
             res.status(404)
             res.json({
-                msg: "List is empty!"
+                msg: "Category does not exist!"
             });
         }else{
-            res.json(
-                poster
-            )
+            const poster = await Poster.find({"category": title});
+            console.log(poster);
+            if(!poster){
+                res.status(404)
+                res.json({
+                    msg: "List is empty!"
+                });
+            }else{
+                res.json(
+                    poster
+                )
+            }
         }
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
     }
 })
 
 posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (req, res)=>{
-    console.log("QUQU")
-    const{userId, category, price, title} = req.body;
-    console.log("req.body " + category);
+    try{
+        console.log("QUQU")
+        const{userId, category, price, title} = req.body;
+        console.log("req.body " + category);
 
-    const categoryExists = await Category.findOne({"title": category})
+        const categoryExists = await Category.findOne({"title": category})
 
-    console.log("categoryExists " + categoryExists);
+        console.log("categoryExists " + categoryExists);
 
-    if(!categoryExists){
-        res.status(404).json({
-            msg: "Category does not exist!"
-        });
-    }
+        if(!categoryExists){
+            res.status(404).json({
+                msg: "Category does not exist!"
+            });
+        }
 
-    const user = await User.findById(userId);
-    console.log("objId " + categoryExists);
-    if(!user){
-        res.status(404).json({
-            msg: "The current user does not exist!"
-        });
-    }else{
-        console.log(user);
+        const user = await User.findById(userId);
+        console.log("objId " + categoryExists);
+        if(!user){
+            res.status(404).json({
+                msg: "The current user does not exist!"
+            });
+        }else{
+            console.log(user);
 
-        let poster = Poster({
-            userId,
-            category, 
-            price, 
-            title,
-            "image": []
-        })
-
-        console.log(req.body.image);
-        console.log("file " +  req.files[0])
-        if(req.files){
-            let images = []
-            req.files.forEach((element) => {
-                console.log(element.filename)
-                images.push(imageUrl + element.filename)
+            let poster = Poster({
+                userId,
+                category, 
+                price, 
+                title,
+                "image": []
             })
-            poster.image = images
-        }
-        poster = await poster.save();
 
-        if(poster){
-            const newCatVal = await Category.findOneAndUpdate(
-                {title: category},
-                {$inc : {count: 1}},
-                {new: true },
-            )
-            console.log("New category: " + newCatVal)
-        }
+            console.log(req.body.image);
+            console.log("file " +  req.files[0])
+            if(req.files){
+                let images = []
+                req.files.forEach((element) => {
+                    console.log(element.filename)
+                    images.push(imageUrl + element.filename)
+                })
+                poster.image = images
+            }
+            poster = await poster.save();
 
-        console.log("Poster is " + poster);
-//         res.json(poster);
+            if(poster){
+                const newCatVal = await Category.findOneAndUpdate(
+                    {title: category},
+                    {$inc : {count: 1}},
+                    {new: true },
+                )
+                console.log("New category: " + newCatVal)
+            }
+
+            console.log("Poster is " + poster);
+    //         res.json(poster);
+        }
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
     }
 })
 
@@ -145,8 +169,9 @@ posterRouter.get("/api/posterImage/:filename", (req, res) => {
         });
         file.pipe(res)
     }catch(e){
-        console.log(e)
-        res.send(e)
+        return res.status(500).json({
+            error: e.message
+        })
     }
 })
 

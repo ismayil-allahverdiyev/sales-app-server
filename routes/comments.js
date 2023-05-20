@@ -51,7 +51,9 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
 
         return res.status(200).json(comment);
     } catch (error) {
-        return res.status(400).send(error);
+        return res.status(500).json({
+            error:error.message
+        });
     }
 })
 
@@ -73,8 +75,8 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
 
         return res.status(200).json(comments)
     }catch(e){
-        return res.status(400).json({
-            err: e
+        return res.status(500).json({
+            error: e
         })
     }
 })

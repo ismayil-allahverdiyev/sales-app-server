@@ -53,8 +53,9 @@ filesRouter.get("/api/videos/:filename", (req, res) => {
             console.log(" 5 ")
         });        
     }catch(e){
-        console.log(e)
-        res.send(e)
+        return res.status(500).json({
+            error: e.message
+        })
     }
 })
 
@@ -69,8 +70,9 @@ filesRouter.get("/api/images/:filename", (req, res) => {
         });
         file.pipe(res)
     }catch(e){
-        console.log(e)
-        res.send(e)
+        return res.status(500).json({
+            error: e.message
+        })
     }
 })
 module.exports = filesRouter

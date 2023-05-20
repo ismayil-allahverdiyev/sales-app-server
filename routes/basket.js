@@ -6,82 +6,155 @@ const User = require("../models/user")
 
 const basketRouter = express.Router()
 
-basketRouter.post("/basket/addToBasket", async (req, res) => {
-    const {token, posterId} = req.body
+basketRouter.post("/api/basket/addToBasket", async (req, res) => {
+    try{
+        const {token, posterId} = req.body
 
-    const user = await jwtVerifier(token)
-    console.log("USER is " + user)
-    if(!user){
-        return res.status(400).json({
-            msg: "User not found!",
-        })
-    }
-
-    const poster = await Poster.findById(posterId)
-
-    if(!poster){
-        return res.status(400).json({
-            msg: "Poster not found!",
-        })
-    }
-
-    const posterInfo = {
-        id: poster.id,
-        description: poster.title,
-        price: poster.price,
-    }
-    
-    for(const basketPoster of user["basket"]){
-        if(basketPoster["id"] == poster.id){
+        const user = await jwtVerifier(token)
+        console.log("USER is " + user)
+        if(!user){
             return res.status(400).json({
-                msg: "Poster already in the basket!",
+                msg: "User not found!",
             })
         }
-    }
-    
-    
-    const updatedUser = await user.updateOne(
+
+        const poster = await Poster.findById(posterId)
+
+        if(!poster){
+            return res.status(400).json({
+                msg: "Poster not found!",
+            })
+        }
+
+        const posterInfo = {
+            id: poster.id,
+            description: poster.title,
+            price: poster.price,
+        }
         
-        {$push: {
-            basket: posterInfo
+        for(const basketPoster of user["basket"]){
+            if(basketPoster["id"] == poster.id){
+                return res.status(400).json({
+                    msg: "Poster already in the basket!",
+                })
+            }
+        }
+        
+        const updatedUser = await user.updateOne(
+            
+            {$push: {
+                basket: posterInfo
+                },
             },
-        },
-    )
-    return res.json(updatedUser)
+        )
+        return res.json(updatedUser)
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
+    }
 })
 
-basketRouter.post("/basket/removeFromBasket", async (req, res) => {
-    const {token, posterId} = req.body
+basketRouter.post("/api/basket/removeFromBasket", async (req, res) => {
+    try{
+        const {token, posterId} = req.body
 
-    const user = await jwtVerifier(token)
-    if(!user){
-        return res.status(400).json({
-            msg: "User not found!",
-        })
-    }
+        const user = await jwtVerifier(token)
+        if(!user){
+            return res.status(400).json({
+                msg: "User not found!",
+            })
+        }
 
-    const poster = await Poster.findById(posterId)
+        const poster = await Poster.findById(posterId)
 
-    if(!poster){
-        return res.status(400).json({
-            msg: "Poster not found!",
-        })
-    }
+        if(!poster){
+            return res.status(400).json({
+                msg: "Poster not found!",
+            })
+        }
 
-    const posterInfo = {
-        id: poster.id,
-        description: poster.title,
-        price: poster.price,
-    }
-    
-    const updatedUser = await user.updateOne(
+        const posterInfo = {
+            id: poster.id,
+            description: poster.title,
+            price: poster.price,
+        }
         
-        {$pull: {
-            basket: posterInfo
+        const updatedUser = await user.updateOne(
+            
+            {$pull: {
+                basket: posterInfo
+                },
             },
-        },
-    )
-    return res.json(updatedUser)
+        )
+        return res.json(updatedUser)
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
+    }
+})
+
+basketRouter.post("/api/basket/isInTheBasket", async (req, res) => {
+    try{
+        const {token, posterId} = req.body
+
+        const user = await jwtVerifier(token)
+        if(!user){
+            return res.status(400).json({
+                msg: "User not found!",
+            })
+        }
+
+        const poster = await Poster.findById(posterId)
+
+        if(!poster){
+            return res.status(400).json({
+                msg: "Poster not found!",
+            })
+        }
+
+        const posterInfo = {
+            id: poster.id,
+            description: poster.title,
+            price: poster.price,
+        }
+        
+        for(const basketPoster of user["basket"]){
+            if(basketPoster["id"] == poster.id){
+                return res.status(200).json({
+                    msg: "Poster is in the basket!",
+                })
+            }
+        }
+        
+        return res.status(200).json({
+            msg: "Poster is not in the basket!",
+        })
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
+    }
+})
+
+basketRouter.post("/api/basket/info", async (req, res) => {
+    try{
+        const {token} = req.body
+
+        const user = await jwtVerifier(token)
+        if(!user){
+            return res.status(400).json({
+                msg: "User not found!",
+            })
+        }
+        
+        return res.status(200).json(user["basket"])
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
+    }
 })
 
 module.exports = basketRouter;
