@@ -90,6 +90,31 @@ posterRouter.post("/api/getPostersByCategory", async (req, res)=>{
     }
 })
 
+
+posterRouter.get("/api/poster/getPosterById", async (req, res)=>{
+    try{
+        const posterId = req.query.posterId;
+        console.log("req.body " + posterId);
+
+        const poster = await Poster.findOne({posterId})
+
+        if(!poster){
+            res.status(404)
+            res.json({
+                msg: "poster does not exist!"
+            });
+        }else{ 
+            res.json(
+                poster
+            )
+        }
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
+    }
+})
+
 posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (req, res)=>{
     try{
         console.log("QUQU")
