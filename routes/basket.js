@@ -138,9 +138,9 @@ basketRouter.post("/api/basket/isInTheBasket", async (req, res) => {
     }
 })
 
-basketRouter.post("/api/basket/info", async (req, res) => {
+basketRouter.get("/api/basket/info", async (req, res) => {
     try{
-        const {token} = req.body
+        const token = req.query.token;
 
         const user = await jwtVerifier(token)
         if(!user){
