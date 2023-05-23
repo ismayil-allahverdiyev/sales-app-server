@@ -96,7 +96,7 @@ posterRouter.get("/api/poster/getPosterById", async (req, res)=>{
         const posterId = req.query.posterId;
         console.log("req.body " + posterId);
 
-        const poster = await Poster.findOne({posterId})
+        const poster = await Poster.findById(posterId)
 
         if(!poster){
             res.status(404)
