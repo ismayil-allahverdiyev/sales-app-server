@@ -95,6 +95,32 @@ basketRouter.post("/api/basket/removeFromBasket", async (req, res) => {
     }
 })
 
+basketRouter.post("/api/basket/emptyBasket", async (req, res) => {
+    try{
+        const {token} = req.body
+
+        const user = await jwtVerifier(token)
+        if(!user){
+            return res.status(400).json({
+                msg: "User not found!",
+            })
+        }
+
+        const updatedUser = await user.updateOne(
+            
+            {$set: {
+                basket: []
+                },
+            },
+        )
+        return res.json(updatedUser)
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
+    }
+})
+
 basketRouter.post("/api/basket/isInTheBasket", async (req, res) => {
     try{
         const {token, posterId} = req.body
