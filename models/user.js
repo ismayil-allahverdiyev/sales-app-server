@@ -20,7 +20,7 @@ const userScheme = mongoose.Schema({
     },
     basket: {
         type: Array,
-        default: []
+        default: [],
     },
     password: {
         type: String,
@@ -37,6 +37,10 @@ const userScheme = mongoose.Schema({
     type: {
         type: String,
         default: "user"
+    },
+    favourites: {
+        type: Array,
+        default: [],
     }
 });
 
