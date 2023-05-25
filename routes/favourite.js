@@ -34,3 +34,5 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
 
     return res.json(updatedUser)
 })
+
+module.exports = favouriteRouter
