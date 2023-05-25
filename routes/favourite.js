@@ -7,7 +7,7 @@ const User = require("../models/user")
 const favouriteRouter = express.Router()
 
 favouriteRouter.post("/api/addToFavourites", async (req, res) => {
-    const{posterId, token} = req.body
+    const{posterId, image, token} = req.body
     
     const user = await jwtVerifier(token)
 
@@ -17,22 +17,41 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
         })
     }
 
-    if(user.favourites.includes(posterId)){
-        return res.status(400).json({
-            "msg": "Poster is already in favourites!",
-        })
+    for(const favourite of user.favourites){
+        if(favourite["id"] == posterId){
+            return res.status(400).json({
+                msg: "Poster is already in favourites!",
+            })
+        }
     }
 
     const updatedUser = await User.findOneAndUpdate(
         user.id,
         {
             $push: {
-                favourites: posterId,
+                favourites: {
+                    "id": posterId,
+                    "image": image,
+                },
             }
         }
     )
 
     return res.json(updatedUser)
+})
+
+favouriteRouter.post("/api/getFavourites", async (req, res) => {
+    const{posterId, image, token} = req.body
+    
+    const user = await jwtVerifier(token)
+
+    if(!user){
+        return res.status(400).json({
+            "msg": "User not found!",
+        })
+    }
+
+    return res.json(user.favourites)
 })
 
 module.exports = favouriteRouter
