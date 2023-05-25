@@ -27,7 +27,7 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
         user.id,
         {
             $push: {
-                favourites: token
+                favourites: posterId,
             }
         }
     )
