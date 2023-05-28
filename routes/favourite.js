@@ -21,6 +21,9 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
     const poster = await Poster.findById(posterId)
 
     for(const favourite of user.favourites){
+        console.log(favourite)
+        console.log(favourite["id"])
+        console.log(favourite.id)
         if(favourite["id"] == posterId){
             return res.status(400).json({
                 msg: "Poster is already in favourites!",
