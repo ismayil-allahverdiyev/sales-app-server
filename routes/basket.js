@@ -13,7 +13,7 @@ basketRouter.post("/api/basket/addToBasket", async (req, res) => {
         const user = await jwtVerifier(token)
         console.log("USER is " + user)
         if(!user){
-            return res.status(400).json({
+            return res.status(404).json({
                 msg: "User not found!",
             })
         }
@@ -21,7 +21,7 @@ basketRouter.post("/api/basket/addToBasket", async (req, res) => {
         const poster = await Poster.findById(posterId)
 
         if(!poster){
-            return res.status(400).json({
+            return res.status(404).json({
                 msg: "Poster not found!",
             })
         }
@@ -34,7 +34,7 @@ basketRouter.post("/api/basket/addToBasket", async (req, res) => {
         
         for(const basketPoster of user["basket"]){
             if(basketPoster["id"] == poster.id){
-                return res.status(400).json({
+                return res.status(404).json({
                     msg: "Poster already in the basket!",
                 })
             }
@@ -61,7 +61,7 @@ basketRouter.post("/api/basket/removeFromBasket", async (req, res) => {
 
         const user = await jwtVerifier(token)
         if(!user){
-            return res.status(400).json({
+            return res.status(404).json({
                 msg: "User not found!",
             })
         }
@@ -69,7 +69,7 @@ basketRouter.post("/api/basket/removeFromBasket", async (req, res) => {
         const poster = await Poster.findById(posterId)
 
         if(!poster){
-            return res.status(400).json({
+            return res.status(404).json({
                 msg: "Poster not found!",
             })
         }
@@ -101,7 +101,7 @@ basketRouter.post("/api/basket/emptyBasket", async (req, res) => {
 
         const user = await jwtVerifier(token)
         if(!user){
-            return res.status(400).json({
+            return res.status(404).json({
                 msg: "User not found!",
             })
         }
@@ -127,7 +127,7 @@ basketRouter.post("/api/basket/isInTheBasket", async (req, res) => {
 
         const user = await jwtVerifier(token)
         if(!user){
-            return res.status(400).json({
+            return res.status(404).json({
                 msg: "User not found!",
             })
         }
@@ -135,7 +135,7 @@ basketRouter.post("/api/basket/isInTheBasket", async (req, res) => {
         const poster = await Poster.findById(posterId)
 
         if(!poster){
-            return res.status(400).json({
+            return res.status(404).json({
                 msg: "Poster not found!",
             })
         }
@@ -170,7 +170,7 @@ basketRouter.get("/api/basket/info", async (req, res) => {
 
         const user = await jwtVerifier(token)
         if(!user){
-            return res.status(400).json({
+            return res.status(404).json({
                 msg: "User not found!",
             })
         }

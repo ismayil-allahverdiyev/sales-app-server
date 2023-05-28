@@ -13,7 +13,7 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
     const user = await jwtVerifier(token)
 
     if(!user){
-        return res.status(400).json({
+        return res.status(404).json({
             "msg": "User not found!",
         })
     }
@@ -21,7 +21,7 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
     const poster = await Poster.findById(posterId)
     for(const favourite of user.favourites){
         if(favourite["id"] == posterId){
-            return res.status(400).json({
+            return res.status(404).json({
                 msg: "Poster is already in favourites!",
             })
         }
@@ -49,7 +49,7 @@ favouriteRouter.post("/api/removeFromFavourites", async (req, res) => {
     const user = await jwtVerifier(token)
 
     if(!user){
-        return res.status(400).json({
+        return res.status(404).json({
             "msg": "User not found!",
         })
     }
@@ -78,7 +78,7 @@ favouriteRouter.post("/api/getFavourites", async (req, res) => {
     const user = await jwtVerifier(token)
 
     if(!user){
-        return res.status(400).json({
+        return res.status(404).json({
             "msg": "User not found!",
         })
     }

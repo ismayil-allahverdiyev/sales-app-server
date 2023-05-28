@@ -15,7 +15,7 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
     const poster = await Poster.findById(posterId);
 
     if(!poster){
-        return res.status(400).json({
+        return res.status(404).json({
             msg: "Poster not found!"
         });
     }
@@ -25,7 +25,7 @@ commentsRouter.post("/comments/addComment", async (req, res) => {
     console.log("Comparison is " + user)
 
     if(!user){
-        return res.status(400).json({
+        return res.status(404).json({
             msg: "User not found!"
         });
     }
@@ -66,7 +66,7 @@ commentsRouter.get("/comments/getCommentsById", async (req, res) => {
         console.log(poster.id)
 
         if(!poster){
-            return res.status(400).json({
+            return res.status(404).json({
                 msg: "Poster not found!"
             });
         }
