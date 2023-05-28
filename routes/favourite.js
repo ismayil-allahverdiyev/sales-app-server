@@ -44,7 +44,7 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
 })
 
 favouriteRouter.post("/api/removeFromFavourites", async (req, res) => {
-    const{posterId, image, price, description, token} = req.body
+    const{posterId, token} = req.body
     
     const user = await jwtVerifier(token)
 
@@ -54,22 +54,17 @@ favouriteRouter.post("/api/removeFromFavourites", async (req, res) => {
         })
     }
 
-    for(const favourite of user.favourites){
-        console.log(favourite)
-        console.log(favourite["id"])
-        console.log(favourite.id)
-        if(favourite["id"] == posterId){
-            return res.status(400).json({
-                msg: "Poster is already in favourites!",
-            })
-        }
-    }
+    const poster = await Poster.findById(posterId)
 
-    const updatedUser = await User.findOneAndUpdate(
-        user.id,
+    const updatedUser = await user.updateOne(
         {
             $pull: {
-                // favourites: ,
+                favourites: {
+                    "id": posterId,
+                    "image": poster.image[0],
+                    "price": poster.price,
+                    "title": poster.title,
+                },
             }
         }
     )
