@@ -19,16 +19,7 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
     }
 
     const poster = await Poster.findById(posterId)
-    console.log("user.fav " + user.id)
-    console.log("user.fav " + user._id)
-    console.log("user.fav " + user["_id"])
-    console.log(user.favourites)
-    console.log("user.fav 2 " + user["favourites"])
-    console.log(user["favourites"])
     for(const favourite of user.favourites){
-        console.log("addToFavourites1" + favourite)
-        console.log("addToFavourites2" + favourite["id"])
-        console.log("addToFavourites3" + favourite.id)
         if(favourite["id"] == posterId){
             return res.status(400).json({
                 msg: "Poster is already in favourites!",
@@ -36,7 +27,7 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
         }
     }
 
-    const updatedUser = await User.findOneAndUpdate(
+    const updatedUser = await user.updateOne(
         user.id,
         {
             $push: {
