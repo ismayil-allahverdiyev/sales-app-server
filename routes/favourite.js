@@ -31,7 +31,7 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
     const updatedUser = await User.findOneAndUpdate(
         user.id,
         {
-            $pull: {
+            $push: {
                 favourites: {
                     "id": posterId,
                     "image": poster.image[0],
@@ -67,13 +67,8 @@ favouriteRouter.post("/api/removeFromFavourites", async (req, res) => {
     const updatedUser = await User.findOneAndUpdate(
         user.id,
         {
-            $push: {
-                favourites: {
-                    "id": posterId,
-                    "image": image,
-                    price,
-                    description,
-                },
+            $pull: {
+                // favourites: ,
             }
         }
     )
