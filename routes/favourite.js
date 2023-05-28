@@ -28,7 +28,6 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
     }
 
     const updatedUser = await user.updateOne(
-        user.id,
         {
             $push: {
                 favourites: {
