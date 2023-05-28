@@ -19,7 +19,7 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
     }
 
     const poster = await Poster.findById(posterId)
-    console.log("user.fav " + user.favourites)
+    console.log("user.fav " + user.name)
     console.log(user.favourites)
     console.log("user.fav 2 " + user["favourites"])
     console.log(user["favourites"])
