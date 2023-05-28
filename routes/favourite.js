@@ -8,82 +8,100 @@ const Poster = require("../models/poster_model")
 const favouriteRouter = express.Router()
 
 favouriteRouter.post("/api/addToFavourites", async (req, res) => {
-    const{posterId, token} = req.body
+    try{
+        const{posterId, token} = req.body
     
-    const user = await jwtVerifier(token)
+        const user = await jwtVerifier(token)
 
-    if(!user){
-        return res.status(404).json({
-            "msg": "User not found!",
-        })
-    }
-
-    const poster = await Poster.findById(posterId)
-    for(const favourite of user.favourites){
-        if(favourite["id"] == posterId){
+        if(!user){
             return res.status(404).json({
-                msg: "Poster is already in favourites!",
+                "msg": "User not found!",
             })
         }
-    }
 
-    const updatedUser = await user.updateOne(
-        {
-            $push: {
-                favourites: {
-                    "id": posterId,
-                    "image": poster.image[0],
-                    "price": poster.price,
-                    "title": poster.title,
-                },
+        const poster = await Poster.findById(posterId)
+        for(const favourite of user.favourites){
+            if(favourite["id"] == posterId){
+                return res.status(404).json({
+                    msg: "Poster is already in favourites!",
+                })
             }
         }
-    )
 
-    return res.json(updatedUser)
+        const updatedUser = await user.updateOne(
+            {
+                $push: {
+                    favourites: {
+                        "id": posterId,
+                        "image": poster.image[0],
+                        "price": poster.price,
+                        "title": poster.title,
+                    },
+                }
+            }
+        )
+
+        return res.json(updatedUser)
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
+    }
 })
 
 favouriteRouter.post("/api/removeFromFavourites", async (req, res) => {
-    const{posterId, token} = req.body
-    
-    const user = await jwtVerifier(token)
+    try{
+        const{posterId, token} = req.body
+        
+        const user = await jwtVerifier(token)
 
-    if(!user){
-        return res.status(404).json({
-            "msg": "User not found!",
+        if(!user){
+            return res.status(404).json({
+                "msg": "User not found!",
+            })
+        }
+
+        const poster = await Poster.findById(posterId)
+
+        const updatedUser = await user.updateOne(
+            {
+                $pull: {
+                    favourites: {
+                        "id": posterId,
+                        "image": poster.image[0],
+                        "price": poster.price,
+                        "title": poster.title,
+                    },
+                }
+            }
+        )
+
+        return res.json(updatedUser)
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
         })
     }
-
-    const poster = await Poster.findById(posterId)
-
-    const updatedUser = await user.updateOne(
-        {
-            $pull: {
-                favourites: {
-                    "id": posterId,
-                    "image": poster.image[0],
-                    "price": poster.price,
-                    "title": poster.title,
-                },
-            }
-        }
-    )
-
-    return res.json(updatedUser)
 })
 
 favouriteRouter.post("/api/getFavourites", async (req, res) => {
-    const{posterId, image, token} = req.body
+    try{
+        const{posterId, image, token} = req.body
     
-    const user = await jwtVerifier(token)
+        const user = await jwtVerifier(token)
 
-    if(!user){
-        return res.status(404).json({
-            "msg": "User not found!",
+        if(!user){
+            return res.status(404).json({
+                "msg": "User not found!",
+            })
+        }
+
+        return res.json(user.favourites)
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
         })
     }
-
-    return res.json(user.favourites)
 })
 
 module.exports = favouriteRouter
