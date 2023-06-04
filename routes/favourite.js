@@ -104,4 +104,42 @@ favouriteRouter.post("/api/getFavourites", async (req, res) => {
     }
 })
 
+favouriteRouter.post("/api/favourite/isInTheFavourites", async (req, res) => {
+    try{
+        const{posterId, token} = req.body
+    
+        const user = await jwtVerifier(token)
+
+        if(!user){
+            return res.status(404).json({
+                "msg": "User not found!",
+            })
+        }
+
+        const poster = await Poster.findById(posterId)
+
+        if(!poster){
+            return res.status(404).json({
+                "msg": "poster not found!",
+            })
+        }
+
+        for(const favourite of user.favourites){
+            if(favourite["id"] == posterId){
+                return res.status(404).json({
+                    inFavourites: true,
+                })
+            }
+        }
+        
+        return res.status(200).json({
+            inFavourites: false,
+        })
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
+    }
+})
+
 module.exports = favouriteRouter
