@@ -84,10 +84,9 @@ favouriteRouter.post("/api/removeFromFavourites", async (req, res) => {
     }
 })
 
-favouriteRouter.post("/api/getFavourites", async (req, res) => {
+favouriteRouter.get("/api/getFavourites", async (req, res) => {
     try{
-        const{posterId, image, token} = req.body
-    
+        const token = req.query.token;
         const user = await jwtVerifier(token)
 
         if(!user){
