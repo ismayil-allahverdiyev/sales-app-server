@@ -1,6 +1,7 @@
 const express = require("express");
 const Category = require("../models/category_model");
 const Poster = require("../models/poster_model");
+const { jwtVerifier } = require("../controllers/auth_controller");
 
 const searchRouter = express.Router();
 
