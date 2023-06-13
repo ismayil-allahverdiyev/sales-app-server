@@ -13,6 +13,7 @@ const filesRouter = require("./routes/files");
 const categoryRouter = require("./routes/categories");
 const basketRouter = require("./routes/basket.js");
 const favouriteRouter = require("./routes/favourite.js");
+const searchRouter = require("./routes/search.js");
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use(categoryRouter);
 app.use(commentsRouter);
 app.use(basketRouter);
 app.use(favouriteRouter);
+app.use(searchRouter);
 
 app.get("/hi", (req, res) => {
     res.send("aaa")

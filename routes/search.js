@@ -29,3 +29,5 @@ searchRouter.get("/api/search", async (req, res) => {
         })
     }
 })
+
+module.exports = searchRouter
