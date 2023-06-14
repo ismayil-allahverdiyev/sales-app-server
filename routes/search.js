@@ -31,4 +31,28 @@ searchRouter.get("/api/search", async (req, res) => {
     }
 })
 
+searchRouter.get("/api/searchByCategories", async (req, res) => {
+    try{
+        const token = req.query.token;
+        const keywords = req.query.keywords;
+
+        const user = await jwtVerifier(token)
+        if(!user){
+            return res.status(404).json({
+                msg: "User not found!",
+            })
+        }
+
+        var posters = await Poster.find({category: {$regex: keywords.join("|"), $options: "i"}})
+        
+        return res.status(200).json({
+            "posters" : posters,
+        })
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
+    }
+})
+
 module.exports = searchRouter
