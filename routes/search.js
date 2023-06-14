@@ -43,7 +43,7 @@ searchRouter.get("/api/searchByCategories", async (req, res) => {
             })
         }
 
-        var posters = await Poster.find({category: {$regex: keywords.join("|"), $options: "i"}})
+        var posters = await Poster.find({category: {$regex: keywords.join('|'), $options: "i"}})
         
         return res.status(200).json({
             "posters" : posters,
