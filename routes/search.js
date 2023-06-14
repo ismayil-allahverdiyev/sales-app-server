@@ -18,7 +18,7 @@ searchRouter.get("/api/search", async (req, res) => {
         }
 
         var categories = await Category.find({title: {$regex: keyword, $options: "i"}})
-        var posters = await Poster.find({title: {$search: keyword}})
+        var posters = await Poster.find({title: {$regex: keyword, $options: "i"}})
         
         return res.status(200).json({
             "posters" : posters,
