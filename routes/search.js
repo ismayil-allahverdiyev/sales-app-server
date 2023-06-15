@@ -49,16 +49,17 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
         const filters = {};
 
         if (minPrice !== undefined && maxPrice !== undefined) {
-            filters.price = { $gte: minPrice, $lte: maxPrice };
+            filters = { $gte: minPrice, $lte: maxPrice };
         } else if (minPrice !== undefined) {
-            filters.price = { $gte: minPrice };
+            filters = { $gte: minPrice };
         } else if (maxPrice !== undefined) {
-            filters.price = { $lte: maxPrice };
+            filters = { $lte: maxPrice };
         }
 
         var posters = await Poster.find({
             category: {$regex: typeof categories == undefined || categories == null ? "" : categories.join('|'), $options: "i"},
             title: {$regex: typeof keyword == undefined || keyword == null ? "" : keyword, $options: "i"},
+            price: filters,
             // ...filters,
         })
         
