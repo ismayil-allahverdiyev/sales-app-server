@@ -58,8 +58,8 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
 
         var posters = await Poster.find({
             category: {$regex: typeof categories == undefined || categories == null ? "" : categories.join('|'), $options: "i"},
-            title: {$regex: keyword, $options: "i"},
-            ...filters,
+            title: {$regex: typeof keyword == undefined || keyword == null ? "" : keyword, $options: "i"},
+            // ...filters,
         })
         
         return res.status(200).json(posters)
