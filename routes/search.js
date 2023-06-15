@@ -53,11 +53,13 @@ searchRouter.get("/api/searchByCategories", async (req, res) => {
     }
 })
 
-searchRouter.get("/api/searchByCategoriesAndTitle", async (req, res) => {
+searchRouter.get("/api/filteredSearch", async (req, res) => {
     try{
         const token = req.query.token;
         const categories = req.query.categories;
         const keyword = req.query.keyword;
+        const minPrice = req.query.keyword;
+        const maxPrice = req.query.keyword;
 
         const user = await jwtVerifier(token)
         if(!user){
@@ -67,8 +69,8 @@ searchRouter.get("/api/searchByCategoriesAndTitle", async (req, res) => {
         }
 
         var posters = await Poster.find({
-            category: {$regex: categories.join('|'), $options: "i"},
-            title: {$regex: keyword, $options: "i"}
+            category: {$regex: !categories ? [] : categories.join('|'), $options: "i"},
+            title: {$regex: !keyword ? "" : keyword, $options: "i"}
         })
         
         return res.status(200).json(posters)
