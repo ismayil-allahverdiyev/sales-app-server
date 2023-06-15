@@ -31,28 +31,6 @@ searchRouter.get("/api/search", async (req, res) => {
     }
 })
 
-searchRouter.get("/api/searchByCategories", async (req, res) => {
-    try{
-        const token = req.query.token;
-        const categories = req.query.categories;
-
-        const user = await jwtVerifier(token)
-        if(!user){
-            return res.status(404).json({
-                msg: "User not found!",
-            })
-        }
-
-        var posters = await Poster.find({category: {$regex: categories.join('|'), $options: "i"}})
-        
-        return res.status(200).json(posters)
-    }catch(e){
-        return res.status(500).json({
-            error: e.message
-        })
-    }
-})
-
 searchRouter.get("/api/filteredSearch", async (req, res) => {
     try{
         const token = req.query.token;
@@ -68,9 +46,20 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
             })
         }
 
+        const filters = {};
+
+        if (minPrice !== undefined && maxPrice !== undefined) {
+            filters.price = { $gte: minPrice, $lte: maxPrice };
+        } else if (minPrice !== undefined) {
+            filters.price = { $gte: minPrice };
+        } else if (maxPrice !== undefined) {
+            filters.price = { $lte: maxPrice };
+        }
+
         var posters = await Poster.find({
             category: {$regex: typeof categories == undefined || categories == null ? "" : categories.join('|'), $options: "i"},
-            title: {$regex: typeof keyword == undefined || keyword == null ? "" : keyword, $options: "i"}
+            title: {$regex: typeof keyword == undefined || keyword == null ? "" : keyword, $options: "i"},
+            ...filters,
         })
         
         return res.status(200).json(posters)
