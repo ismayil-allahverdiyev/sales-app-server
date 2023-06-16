@@ -62,12 +62,12 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
         }
         
         console.log("PRIIIICEEFILTEEER " + priceFilter)
-        console.log("PRIIIICEEFILTEEER 2 " + priceFilter != {})
-        console.log("PRIIIICEEFILTEEER 3 " + priceFilter == {})
+        console.log(priceFilter != {})
+        console.log(priceFilter == {})
         if(priceFilter != {}){
 
             filters.price = priceFilter
-            console.log("PRIIIICEEFILTEEER 4 " + filters)
+            console.log("PRIIIICEEFILTEEER 4 " + filters.price + " " + filters.category)
 
         }
 
