@@ -36,8 +36,8 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
         const token = req.query.token;
         const categories = req.query.categories;
         const keyword = req.query.keyword;
-        const minPrice = req.query.keyword;
-        const maxPrice = req.query.keyword;
+        const minPrice = req.query.minPrice;
+        const maxPrice = req.query.maxPrice;
 
         const user = await jwtVerifier(token)
         if(!user){
@@ -51,28 +51,32 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
             title: {$regex: typeof keyword == undefined || keyword == null ? "" : keyword, $options: "i"},
         }
 
-        let priceFilter;
+        const priceFilter = {};
 
         if (minPrice != undefined && maxPrice != undefined) {
             console.log("HEHE Both not undefined")
-            priceFilter = { $gte: minPrice, $lte: maxPrice };
+            priceFilter.price = { $gte: minPrice, $lte: maxPrice };
         } else if (minPrice !== undefined) {
-            priceFilter = { $gte: minPrice };
+            priceFilter.price = { $gte: minPrice };
         } else if (maxPrice !== undefined) {
-            priceFilter = { $lte: maxPrice };
+            priceFilter.price = { $lte: maxPrice };
         }
         
-        console.log("PRIIIICEEFILTEEER " + priceFilter)
-        console.log(priceFilter)
-        console.log(priceFilter == {})
-        if(priceFilter != undefined){
+        // console.log("PRIIIICEEFILTEEER " + priceFilter)
+        // console.log(priceFilter)
+        // console.log(priceFilter == {})
+        // if(priceFilter != undefined){
 
-            filters.price = priceFilter
-            console.log("PRIIIICEEFILTEEER 4 " + filters.price.$gte + " " + filters.category.$regex)
+        //     filters.price = priceFilter
+        //     console.log("PRIIIICEEFILTEEER 4 " + filters.price.$gte + " " + filters.category.$regex)
 
-        }
+        // }
 
-        var posters = await Poster.find(filters)
+        var posters = await Poster.find({
+            category: {$regex: typeof categories == undefined || categories == null ? "" : categories.join('|'), $options: "i"},
+            title: {$regex: typeof keyword == undefined || keyword == null ? "" : keyword, $options: "i"},
+            ...priceFilter,
+        })
         return res.status(200).json(posters)
     }catch(e){
         return res.status(500).json({
