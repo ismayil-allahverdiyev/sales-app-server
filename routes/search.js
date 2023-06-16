@@ -62,9 +62,9 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
         }
         
         
-        if(priceFilter != {}){
-            filters.price = priceFilter
-        }
+        // if(priceFilter != {}){
+        //     filters.price = priceFilter
+        // }
 
         var posters = await Poster.find(filters)
         return res.status(200).json(posters)
