@@ -46,7 +46,7 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
             })
         }
 
-        const filters = {};
+        let filters = {};
 
         if (minPrice !== undefined && maxPrice !== undefined) {
             filters = { $gte: minPrice, $lte: maxPrice };
