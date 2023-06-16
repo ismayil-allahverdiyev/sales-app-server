@@ -46,23 +46,27 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
             })
         }
 
-        let filters = {};
-
-        if (minPrice !== undefined && maxPrice !== undefined) {
-            filters = { $gte: minPrice, $lte: maxPrice };
-        } else if (minPrice !== undefined) {
-            filters = { $gte: minPrice };
-        } else if (maxPrice !== undefined) {
-            filters = { $lte: maxPrice };
-        }
-
-        var posters = await Poster.find({
+        const filters = {
             category: {$regex: typeof categories == undefined || categories == null ? "" : categories.join('|'), $options: "i"},
             title: {$regex: typeof keyword == undefined || keyword == null ? "" : keyword, $options: "i"},
-            price: filters,
-            // ...filters,
-        })
+        }
+
+        let priceFilter = {};
+
+        if (minPrice !== undefined && maxPrice !== undefined) {
+            priceFilter = { $gte: minPrice, $lte: maxPrice };
+        } else if (minPrice !== undefined) {
+            priceFilter = { $gte: minPrice };
+        } else if (maxPrice !== undefined) {
+            priceFilter = { $lte: maxPrice };
+        }
         
+        
+        if(priceFilter != {}){
+            filters.price = priceFilter
+        }
+
+        var posters = await Poster.find(filters)
         return res.status(200).json(posters)
     }catch(e){
         return res.status(500).json({
