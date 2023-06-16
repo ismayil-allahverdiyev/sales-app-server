@@ -61,10 +61,15 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
             priceFilter = { $lte: maxPrice };
         }
         
-        
-        // if(priceFilter != {}){
-        //     filters.price = priceFilter
-        // }
+        console.log("PRIIIICEEFILTEEER " + priceFilter)
+        console.log("PRIIIICEEFILTEEER 2 " + priceFilter != {})
+        console.log("PRIIIICEEFILTEEER 3 " + priceFilter == {})
+        if(priceFilter != {}){
+
+            filters.price = priceFilter
+            console.log("PRIIIICEEFILTEEER 4 " + filters)
+
+        }
 
         var posters = await Poster.find(filters)
         return res.status(200).json(posters)
