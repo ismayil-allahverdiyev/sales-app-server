@@ -46,11 +46,6 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
             })
         }
 
-        const filters = {
-            category: {$regex: typeof categories == undefined || categories == null ? "" : categories.join('|'), $options: "i"},
-            title: {$regex: typeof keyword == undefined || keyword == null ? "" : keyword, $options: "i"},
-        }
-
         const priceFilter = {};
 
         if (minPrice != undefined && maxPrice != undefined) {
@@ -61,16 +56,6 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
         } else if (maxPrice !== undefined) {
             priceFilter.price = { $lte: maxPrice };
         }
-        
-        // console.log("PRIIIICEEFILTEEER " + priceFilter)
-        // console.log(priceFilter)
-        // console.log(priceFilter == {})
-        // if(priceFilter != undefined){
-
-        //     filters.price = priceFilter
-        //     console.log("PRIIIICEEFILTEEER 4 " + filters.price.$gte + " " + filters.category.$regex)
-
-        // }
 
         var posters = await Poster.find({
             category: {$regex: typeof categories == undefined || categories == null ? "" : categories.join('|'), $options: "i"},
