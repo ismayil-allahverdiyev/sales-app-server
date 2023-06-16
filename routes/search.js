@@ -51,9 +51,9 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
             title: {$regex: typeof keyword == undefined || keyword == null ? "" : keyword, $options: "i"},
         }
 
-        let priceFilter = {};
+        let priceFilter;
 
-        if (minPrice !== undefined && maxPrice !== undefined) {
+        if (minPrice != undefined && maxPrice != undefined) {
             priceFilter = { $gte: minPrice, $lte: maxPrice };
         } else if (minPrice !== undefined) {
             priceFilter = { $gte: minPrice };
@@ -62,9 +62,9 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
         }
         
         console.log("PRIIIICEEFILTEEER " + priceFilter)
-        console.log(priceFilter.size)
+        console.log(priceFilter)
         console.log(priceFilter == {})
-        if(priceFilter != {}){
+        if(priceFilter != undefined){
 
             filters.price = priceFilter
             console.log("PRIIIICEEFILTEEER 4 " + filters.price.$gte + " " + filters.category.$regex)
