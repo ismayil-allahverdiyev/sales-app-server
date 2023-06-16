@@ -31,6 +31,28 @@ searchRouter.get("/api/search", async (req, res) => {
     }
 })
 
+searchRouter.get("/api/searchCategories", async (req, res) => {
+    try{
+        const token = req.query.token;
+        const keyword = req.query.keyword;
+
+        const user = await jwtVerifier(token)
+        if(!user){
+            return res.status(404).json({
+                msg: "User not found!",
+            })
+        }
+
+        var categories = await Category.find({title: {$regex: keyword, $options: "i"}})
+        
+        return res.status(200).json(categories)
+    }catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
+    }
+})
+
 searchRouter.get("/api/filteredSearch", async (req, res) => {
     try{
         const token = req.query.token;
