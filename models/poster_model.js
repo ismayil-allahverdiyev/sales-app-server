@@ -22,6 +22,12 @@ const posterSchema = mongoose.Schema({
     },
     image:{
         type: [String],
+    },
+    coverImage:{
+        type: String,
+    },
+    colorPalette:{
+        type: [String],
     }
 });
 

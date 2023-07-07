@@ -22,13 +22,13 @@ posterRouter.get("/api/getAllPostersByTitle", async (req, res)=>{
         const poster = await Poster.find({category});
         console.log(poster);
         if(!poster){
-            res.status(404).json({
+             return res.status(404).json({
                 msg: "List is empty!"
             });
         }
-        res.json(
+        return res.json(
             poster
-        )
+        );
     }catch(e){
         return res.status(500).json({
             error: e.message
@@ -41,13 +41,13 @@ posterRouter.get("/api/getAllPosters", async (req, res)=>{
         const poster = await Poster.find({});
         console.log(poster);
         if(!poster){
-            res.status(404).json({
+            return res.status(404).json({
                 msg: "List is empty!"
             });
         }
-        res.json(
+        return res.json(
             poster
-        )
+        );
     }catch(e){
         return res.status(500).json({
             error: e.message
@@ -65,22 +65,20 @@ posterRouter.post("/api/getPostersByCategory", async (req, res)=>{
         console.log("categoryExists " + categoryExists)
 
         if(!categoryExists){
-            res.status(404)
-            res.json({
+            return res.status(404).json({
                 msg: "Category does not exist!"
             });
         }else{
             const poster = await Poster.find({"category": title});
             console.log(poster);
             if(!poster){
-                res.status(404)
-                res.json({
+                return res.status(404).json({
                     msg: "List is empty!"
                 });
             }else{
-                res.json(
+                return res.json(
                     poster
-                )
+                );
             }
         }
     }catch(e){
@@ -99,14 +97,13 @@ posterRouter.get("/api/poster/getPosterById", async (req, res)=>{
         const poster = await Poster.findById(posterId)
 
         if(!poster){
-            res.status(404)
-            res.json({
+            return res.status(404).json({
                 msg: "poster does not exist!"
             });
         }else{ 
-            res.json(
+            return res.json(
                 poster
-            )
+            );
         }
     }catch(e){
         return res.status(500).json({
@@ -118,7 +115,7 @@ posterRouter.get("/api/poster/getPosterById", async (req, res)=>{
 posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (req, res)=>{
     try{
         console.log("QUQU")
-        const{userId, category, price, title} = req.body;
+        const{userId, category, price, title, coverImage, colorPalette} = req.body;
         console.log("req.body " + category);
 
         const categoryExists = await Category.findOne({"title": category})
@@ -126,7 +123,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         console.log("categoryExists " + categoryExists);
 
         if(!categoryExists){
-            res.status(404).json({
+            return res.status(404).json({
                 msg: "Category does not exist!"
             });
         }
@@ -134,7 +131,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         const user = await User.findById(userId);
         console.log("objId " + categoryExists);
         if(!user){
-            res.status(404).json({
+            return res.status(404).json({
                 msg: "The current user does not exist!"
             });
         }else{
@@ -145,7 +142,9 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
                 category, 
                 price, 
                 title,
-                "image": []
+                "image": [],
+                coverImage,
+                colorPalette,
             })
 
             console.log(req.body.image);
@@ -155,6 +154,9 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
                 req.files.forEach((element) => {
                     console.log(element.filename)
                     images.push(imageUrl + element.filename)
+                    if(element.filename == coverImage){
+                        poster.coverImage = imageUrl + element.filename;
+                    }
                 })
                 poster.image = images
             }
@@ -170,7 +172,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
             }
 
             console.log("Poster is " + poster);
-    //         res.json(poster);
+            return res.json(poster);
         }
     }catch(e){
         return res.status(500).json({
@@ -190,7 +192,7 @@ posterRouter.get("/api/posterImage/:filename", (req, res) => {
 
         const file = index.gfs.openDownloadStreamByName(parFilename);
         file.on("error", function(err){
-            res.send("No image found with the given id!")
+            return res.send("No image found with the given id!")
         });
         file.pipe(res)
     }catch(e){
