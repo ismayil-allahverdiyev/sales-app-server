@@ -123,6 +123,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), compres
         const categoryExists = await Category.findOne({"title": category})
 
         console.log("categoryExists " + categoryExists);
+        
 
         if(!categoryExists){
             return res.status(404).json({
