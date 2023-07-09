@@ -8,12 +8,7 @@ const DB = process.env.URL;
 
 const storage = new GridFsStorage({
   url: DB,
-  file: async (req, file) => {
-    const buffer = await sharp(file.buffer)
-          .resize({ quality: 70 })
-          .toBuffer();
-    console.log("Compressor working 2")
-    file.buffer = buffer;
+  file: (req, file) => {
     console.log("GridFsStorage worked")
     return new Promise((resolve, reject) => {
       const { v4: uuidv4 } = require('uuid');
