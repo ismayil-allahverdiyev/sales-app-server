@@ -8,6 +8,7 @@ const index = require("../index")
 const posterImageUploadGfs = require("../middlewares/posterImageGfsUpload");
 const Category = require("../models/category_model.js");
 const compressImages = require("../middlewares/compressor.js");
+const { jwtVerifier } = require("../controllers/auth_controller.js");
 
 const posterRouter = express.Router();
 
@@ -116,7 +117,7 @@ posterRouter.get("/api/poster/getPosterById", async (req, res)=>{
 posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), compressImages, async (req, res)=>{
     try{
         console.log("QUQU")
-        const{userId, category, price, title, coverImage, colorPalette} = req.body;
+        const{token, category, price, title, coverImage, colorPalette} = req.body;
         console.log("req.body " + category);
 
         const categoryExists = await Category.findOne({"title": category})
@@ -129,7 +130,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), compres
             });
         }
 
-        const user = await User.findById(userId);
+        const user = await jwtVerifier(token);
         console.log("objId " + categoryExists);
         if(!user){
             return res.status(404).json({
@@ -139,7 +140,6 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), compres
             console.log(user);
 
             let poster = Poster({
-                userId,
                 category, 
                 price, 
                 title,

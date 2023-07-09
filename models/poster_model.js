@@ -7,11 +7,6 @@ const posterSchema = mongoose.Schema({
         trim: true,
         default: "all"
     },
-    userId:{
-        type: String,
-        required: true,
-        trim: true
-    },
     price:{
         type: Number,
         required: true,
