@@ -26,7 +26,7 @@ const storage = new GridFsStorage({
         if (err) {
           return reject(err);
         }
-        buf = await sharp(buf)
+        buf = await sharp(buf).png
           .resize({ quality: 70 })
           .toBuffer();
         const filename = buf.toString('hex') + path.extname(uuidv4());
