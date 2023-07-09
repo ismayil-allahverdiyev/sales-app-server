@@ -7,7 +7,6 @@ const mongoose = require("mongoose");
 var Grid = require('gridfs-stream');
 
 const authRouter = require("./routes/auth.js");
-const compressImagesRouter = require("./middlewares/compressor.js")
 const posterRouter = require("./routes/poster.js");
 const commentsRouter = require("./routes/comments.js")
 const filesRouter = require("./routes/files");
@@ -40,7 +39,6 @@ mongoose.connection.on('connected', () => {
 
 app.use(express.json());
 app.use(authRouter);
-app.use(compressImagesRouter);
 app.use(filesRouter);
 app.use(posterRouter);
 app.use(categoryRouter);
