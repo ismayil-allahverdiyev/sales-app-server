@@ -11,7 +11,7 @@ const storage = new GridFsStorage({
   url: DB,
   file:async (req, file) => {
     console.log("Compressor working 1")
-    console.log("Compressor " + file.buffer)
+    console.log("Compressor " + file.filename)
 
     const buffer = await sharp(file.buffer)
           .resize({ quality: 70 })
