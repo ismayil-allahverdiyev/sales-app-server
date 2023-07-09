@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const path = require('path');
 const uuid = require("uuid")
 const multer = require("multer")
+const sharp = require('sharp');
 const {GridFsStorage} = require('multer-gridfs-storage');
 
 const DB = process.env.URL;
