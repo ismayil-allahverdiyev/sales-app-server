@@ -13,18 +13,22 @@ const storage = new GridFsStorage({
     console.log("Compressor working 1")
     console.log("Compressor " + file.filename)
 
-    const buffer = await sharp(file.buffer)
-          .resize({ quality: 70 })
-          .toBuffer();
-    console.log("Compressor working 2")
-    file.buffer = buffer;
+    // const buffer = await sharp(file.buffer)
+    //       .resize({ quality: 70 })
+    //       .toBuffer();
+    // console.log("Compressor working 2")
+    // file.buffer = buffer;
     console.log("GridFsStorage worked")
     return new Promise((resolve, reject) => {
       const { v4: uuidv4 } = require('uuid');
-      crypto.randomBytes(16, (err, buf) => {
+      
+      crypto.randomBytes(16, async(err, buf) => {
         if (err) {
           return reject(err);
         }
+        buf = await sharp(file.buffer)
+          .resize({ quality: 70 })
+          .toBuffer();
         const filename = buf.toString('hex') + path.extname(uuidv4());
         const fileInfo = {
           filename: filename,
