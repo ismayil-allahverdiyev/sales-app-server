@@ -114,7 +114,7 @@ posterRouter.get("/api/poster/getPosterById", async (req, res)=>{
     }
 })
 
-posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), compressImages, async (req, res)=>{
+posterRouter.post("/api/addPoster", compressImages, posterImageUploadGfs.array("image"), async (req, res)=>{
     try{
         console.log("1")
         const{token, category, price, title, coverImage, colorPalette} = req.body;
