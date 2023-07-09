@@ -7,6 +7,7 @@ const index = require("../index")
 
 const posterImageUploadGfs = require("../middlewares/posterImageGfsUpload");
 const Category = require("../models/category_model.js");
+const compressImages = require("../middlewares/compressor.js");
 
 const posterRouter = express.Router();
 
@@ -112,7 +113,7 @@ posterRouter.get("/api/poster/getPosterById", async (req, res)=>{
     }
 })
 
-posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (req, res)=>{
+posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), compressImages, async (req, res)=>{
     try{
         console.log("QUQU")
         const{userId, category, price, title, coverImage, colorPalette} = req.body;
@@ -151,8 +152,9 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
             console.log("file " +  req.files[0])
             if(req.files){
                 let images = []
-                req.files.forEach((element) => {
-                    console.log(element.filename)
+                req.files.forEach(async (element) => {
+                    const file = element;
+                    const buffer = await getStream.buffer(element.stream);
                     images.push(imageUrl + element.filename)
                     if(element.filename == coverImage){
                         poster.coverImage = imageUrl + element.filename;
