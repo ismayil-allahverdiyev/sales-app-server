@@ -161,8 +161,6 @@ posterRouter.post("/api/addPoster", compressImages, posterImageUploadGfs.array("
                 req.files.forEach(async (element) => {
                     console.log("file looper");
 
-                    const file = element;
-                    const buffer = await getStream.buffer(element.stream);
                     images.push(imageUrl + element.filename)
                     if(element.filename == coverImage){
                         poster.coverImage = imageUrl + element.filename;
