@@ -116,19 +116,21 @@ posterRouter.get("/api/poster/getPosterById", async (req, res)=>{
 
 posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), compressImages, async (req, res)=>{
     try{
-        console.log("QUQU")
+        console.log("1")
         const{token, category, price, title, coverImage, colorPalette} = req.body;
-        console.log("req.body " + category);
+        console.log("2");
 
         const categoryExists = await Category.findOne({"title": category})
 
-        console.log("categoryExists " + categoryExists);
+        console.log("3");
         
         if(!categoryExists){
             return res.status(404).json({
                 msg: "Category does not exist!"
             });
         }
+        console.log("4");
+
 
         const user = await jwtVerifier(token);
         console.log("objId " + categoryExists);
@@ -136,8 +138,10 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), compres
             return res.status(404).json({
                 msg: "The current user does not exist!"
             });
+            console.log("5");
+
         }else{
-            console.log(user);
+            console.log("6");
 
             let poster = Poster({
                 category, 
@@ -151,8 +155,12 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), compres
             console.log(req.body.image);
             console.log("file " +  req.files[0])
             if(req.files){
+                console.log("7");
+
                 let images = []
                 req.files.forEach(async (element) => {
+                    console.log("file looper");
+
                     const file = element;
                     const buffer = await getStream.buffer(element.stream);
                     images.push(imageUrl + element.filename)
@@ -160,9 +168,14 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), compres
                         poster.coverImage = imageUrl + element.filename;
                     }
                 })
+                console.log("8");
+
                 poster.image = images
             }
+
             poster = await poster.save();
+            console.log("9");
+
 
             if(poster){
                 const newCatVal = await Category.findOneAndUpdate(
@@ -172,6 +185,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), compres
                 )
                 console.log("New category: " + newCatVal)
             }
+            console.log("10");
 
             console.log("Poster is " + poster);
             return res.json(poster);

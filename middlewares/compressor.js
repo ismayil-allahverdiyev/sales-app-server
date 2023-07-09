@@ -4,6 +4,7 @@ const compressImages = async (req, res, next) => {
   try {
     if (req.files) {
       for (const element of req.files) {
+        console.log("Compressor working")
         const buffer = await sharp(element.buffer)
           .resize({ quality: 70 })
           .toBuffer();
