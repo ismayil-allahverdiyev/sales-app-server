@@ -7,7 +7,6 @@ const index = require("../index")
 
 const posterImageUploadGfs = require("../middlewares/posterImageGfsUpload");
 const Category = require("../models/category_model.js");
-const compressImages = require("../middlewares/compressor.js");
 const { jwtVerifier } = require("../controllers/auth_controller.js");
 
 const posterRouter = express.Router();
@@ -16,33 +15,14 @@ const videoUrl = "https://aisha-sales-app.herokuapp.com/api/videos/"
 const imageUrl = "https://aisha-sales-app.herokuapp.com/api/posterImage/"
 
 
-posterRouter.get("/api/getAllPostersByTitle", async (req, res)=>{
-    try{
-        const{category} = req.body;
+posterRouter.get("/api/getAllPostersByTitle", async (req, res) => {
+    try {
+        const { category } = req.body;
         console.log(category);
 
-        const poster = await Poster.find({category});
+        const poster = await Poster.find({ category });
         console.log(poster);
-        if(!poster){
-             return res.status(404).json({
-                msg: "List is empty!"
-            });
-        }
-        return res.json(
-            poster
-        );
-    }catch(e){
-        return res.status(500).json({
-            error: e.message
-        })
-    }
-})
-
-posterRouter.get("/api/getAllPosters", async (req, res)=>{
-    try{
-        const poster = await Poster.find({});
-        console.log(poster);
-        if(!poster){
+        if (!poster) {
             return res.status(404).json({
                 msg: "List is empty!"
             });
@@ -50,40 +30,59 @@ posterRouter.get("/api/getAllPosters", async (req, res)=>{
         return res.json(
             poster
         );
-    }catch(e){
+    } catch (e) {
         return res.status(500).json({
             error: e.message
         })
     }
 })
 
-posterRouter.post("/api/getPostersByCategory", async (req, res)=>{
+posterRouter.get("/api/getAllPosters", async (req, res) => {
+    try {
+        const poster = await Poster.find({});
+        console.log(poster);
+        if (!poster) {
+            return res.status(404).json({
+                msg: "List is empty!"
+            });
+        }
+        return res.json(
+            poster
+        );
+    } catch (e) {
+        return res.status(500).json({
+            error: e.message
+        })
+    }
+})
 
-    try{
-        const{title} = req.body;
+posterRouter.post("/api/getPostersByCategory", async (req, res) => {
+
+    try {
+        const { title } = req.body;
         console.log("req.body " + title);
 
-        const categoryExists = await Category.findOne({title})
+        const categoryExists = await Category.findOne({ title })
         console.log("categoryExists " + categoryExists)
 
-        if(!categoryExists){
+        if (!categoryExists) {
             return res.status(404).json({
                 msg: "Category does not exist!"
             });
-        }else{
-            const poster = await Poster.find({"category": title});
+        } else {
+            const poster = await Poster.find({ "category": title });
             console.log(poster);
-            if(!poster){
+            if (!poster) {
                 return res.status(404).json({
                     msg: "List is empty!"
                 });
-            }else{
+            } else {
                 return res.json(
                     poster
                 );
             }
         }
-    }catch(e){
+    } catch (e) {
         return res.status(500).json({
             error: e.message
         })
@@ -91,40 +90,40 @@ posterRouter.post("/api/getPostersByCategory", async (req, res)=>{
 })
 
 
-posterRouter.get("/api/poster/getPosterById", async (req, res)=>{
-    try{
+posterRouter.get("/api/poster/getPosterById", async (req, res) => {
+    try {
         const posterId = req.query.posterId;
         console.log("req.body " + posterId);
 
         const poster = await Poster.findById(posterId)
 
-        if(!poster){
+        if (!poster) {
             return res.status(404).json({
                 msg: "poster does not exist!"
             });
-        }else{ 
+        } else {
             return res.json(
                 poster
             );
         }
-    }catch(e){
+    } catch (e) {
         return res.status(500).json({
             error: e.message
         })
     }
 })
 
-posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (req, res)=>{
-    try{
+posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (req, res) => {
+    try {
         console.log("1")
-        const{token, category, price, title, coverImage, colorPalette} = req.body;
+        const { token, category, price, title, coverImage, colorPalette } = req.body;
         console.log("2");
 
-        const categoryExists = await Category.findOne({"title": category})
+        const categoryExists = await Category.findOne({ "title": category })
 
         console.log("3");
-        
-        if(!categoryExists){
+
+        if (!categoryExists) {
             return res.status(404).json({
                 msg: "Category does not exist!"
             });
@@ -134,18 +133,18 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
 
         const user = await jwtVerifier(token);
         console.log("objId " + categoryExists);
-        if(!user){
+        if (!user) {
             return res.status(404).json({
                 msg: "The current user does not exist!"
             });
             console.log("5");
 
-        }else{
+        } else {
             console.log("6");
 
             let poster = Poster({
-                category, 
-                price, 
+                category,
+                price,
                 title,
                 "image": [],
                 coverImage,
@@ -153,8 +152,8 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
             })
 
             console.log(req.body.image);
-            console.log("file " +  req.files[0])
-            if(req.files){
+            console.log("file " + req.files[0])
+            if (req.files) {
                 console.log("7");
 
                 let images = []
@@ -162,7 +161,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
                     console.log("file looper");
 
                     images.push(imageUrl + element.filename)
-                    if(element.filename == coverImage){
+                    if (element.filename == coverImage) {
                         poster.coverImage = imageUrl + element.filename;
                     }
                 })
@@ -175,11 +174,11 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
             console.log("9");
 
 
-            if(poster){
+            if (poster) {
                 const newCatVal = await Category.findOneAndUpdate(
-                    {title: category},
-                    {$inc : {count: 1}},
-                    {new: true },
+                    { title: category },
+                    { $inc: { count: 1 } },
+                    { new: true },
                 )
                 console.log("New category: " + newCatVal)
             }
@@ -188,7 +187,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
             console.log("Poster is " + poster);
             return res.json(poster);
         }
-    }catch(e){
+    } catch (e) {
         return res.status(500).json({
             error: e.message
         })
@@ -196,7 +195,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
 })
 
 posterRouter.get("/api/posterImage/:filename", (req, res) => {
-    try{
+    try {
         const parFilename = req.params.filename
         console.log(parFilename)
 
@@ -205,11 +204,11 @@ posterRouter.get("/api/posterImage/:filename", (req, res) => {
         })
 
         const file = index.gfs.openDownloadStreamByName(parFilename);
-        file.on("error", function(err){
+        file.on("error", function (err) {
             return res.send("No image found with the given id!")
         });
         file.pipe(res)
-    }catch(e){
+    } catch (e) {
         return res.status(500).json({
             error: e.message
         })
