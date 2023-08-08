@@ -161,10 +161,10 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
                     console.log("file looper");
 
                     images.push(imageUrl + element.filename)
-                    if (element.filename == coverImage) {
-                        poster.coverImage = imageUrl + element.filename;
-                    }
+
                 })
+
+                poster.coverImage = images[0];
                 console.log("8");
 
                 poster.image = images
