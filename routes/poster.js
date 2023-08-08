@@ -116,7 +116,7 @@ posterRouter.get("/api/poster/getPosterById", async (req, res) => {
 posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (req, res) => {
     try {
         console.log("1")
-        const { token, category, price, title, coverImage, colorPalette } = req.body;
+        const { token, category, price, title, colorPalette } = req.body;
         console.log("2");
 
         const categoryExists = await Category.findOne({ "title": category })
@@ -147,7 +147,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
                 price,
                 title,
                 "image": [],
-                coverImage,
+                "coverImage": "",
                 colorPalette,
             })
 
