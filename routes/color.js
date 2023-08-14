@@ -33,9 +33,7 @@ colorRouter.get("/api/color/searchByName", async (req, res) => {
 
         let color = await Color.find({ colorName })
 
-        res.status(400).json({
-            color
-        })
+        res.status(400).json(color)
     } catch (error) {
         res.status(500).json({
             error: e.message
