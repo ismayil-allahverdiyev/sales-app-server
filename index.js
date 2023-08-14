@@ -1,4 +1,4 @@
-const PORT  = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 const DB = process.env.URL;
 
@@ -14,27 +14,28 @@ const categoryRouter = require("./routes/categories");
 const basketRouter = require("./routes/basket.js");
 const favouriteRouter = require("./routes/favourite.js");
 const searchRouter = require("./routes/search.js");
+const colorRouter = require("./routes/color.js");
 
 const app = express();
 
 
 const connectDatabase = async () => {
-    try {      
-      await mongoose.connect(DB);
-  
-      console.log("connected to database");
-    } catch (error) {
-      console.log(error);
-      process.exit(1);
-    }
-  };
-  
+  try {
+    await mongoose.connect(DB);
+
+    console.log("connected to database");
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+
 connectDatabase();
 
 mongoose.connection.on('connected', () => {
-    module.exports.gfs = new mongoose.mongo.GridFSBucket(mongoose.connection, {
-      bucketName: "uploads"
-    })
+  module.exports.gfs = new mongoose.mongo.GridFSBucket(mongoose.connection, {
+    bucketName: "uploads"
+  })
 })
 
 app.use(express.json());
@@ -46,11 +47,12 @@ app.use(commentsRouter);
 app.use(basketRouter);
 app.use(favouriteRouter);
 app.use(searchRouter);
+app.use(colorRouter);
 
 app.get("/hi", (req, res) => {
-    res.send("aaa")
+  res.send("aaa")
 })
 
-app.listen(PORT, "", function (){
-    console.log(`Connected to ${PORT}`);
+app.listen(PORT, "", function () {
+  console.log(`Connected to ${PORT}`);
 });
