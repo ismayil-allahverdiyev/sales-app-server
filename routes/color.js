@@ -17,11 +17,11 @@ colorRouter.post("/api/color/addNewColor", async (req, res) => {
 
         console.log("COLOR IS " + color)
 
-        res.statusCode(400).json({
+        res.status(400).json({
             color
         })
     } catch (error) {
-        res.statusCode(500).json({
+        res.status(500).json({
             error: e.message
         })
     }
