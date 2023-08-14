@@ -5,24 +5,42 @@ const Color = require("../models/color_model")
 const colorRouter = express.Router()
 
 colorRouter.post("/api/color/addNewColor", async (req, res) => {
-    const { colorName, hexCodes } = req.body
+    try {
+        const { colorName, hexCodes } = req.body
 
-    let color = Color({
-        colorName,
-        hexCodes,
-    })
+        let color = Color({
+            colorName,
+            hexCodes,
+        })
 
-    color = await color.save()
+        color = await color.save()
 
-    console.log("COLOR IS " + color)
+        console.log("COLOR IS " + color)
+
+        res.statusCode(400).json({
+            color
+        })
+    } catch (error) {
+        res.statusCode(500).json({
+            error: e.message
+        })
+    }
 })
 
 colorRouter.get("/api/color/searchByName", async (req, res) => {
-    const colorName = req.query.name
+    try {
+        const colorName = req.query.colorName
 
-    let color = await Color.find({ colorName })
+        let color = await Color.find({ colorName })
 
-    console.log(color)
+        res.statusCode(400).json({
+            color
+        })
+    } catch (error) {
+        res.statusCode(500).json({
+            error: e.message
+        })
+    }
 })
 
 module.exports = colorRouter
