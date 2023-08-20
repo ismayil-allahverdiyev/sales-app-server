@@ -8,12 +8,18 @@ const colorRouter = express.Router()
 colorRouter.post("/api/color/addNewColors", async (req, res) => {
     try {
         const { colors } = req.body// add color as a list
-        //logs updated in multicolor adding function
-        await colorUploader(colors)
 
-        return res.status(200).json({
-            msg: "Colors added successfully!"
-        })
+        const result = await colorUploader(colors)
+        if (result == true) {
+            return res.status(200).json({
+                msg: "Colors added successfully!"
+            })
+        }
+        else {
+            return res.status(500).json({
+                error: "Something went wrong!"
+            })
+        }
     } catch (error) {
         res.status(500).json({
             error: e.message

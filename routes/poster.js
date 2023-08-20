@@ -8,6 +8,7 @@ const index = require("../index")
 const posterImageUploadGfs = require("../middlewares/posterImageGfsUpload");
 const Category = require("../models/category_model.js");
 const { jwtVerifier } = require("../controllers/auth_controller.js");
+const { colorUploader } = require("../controllers/color_controller.js");
 
 const posterRouter = express.Router();
 
@@ -130,6 +131,19 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         }
         console.log("4");
 
+        const result = await colorUploader(colorPalette)
+
+        if (result == false) {
+            return res.status(500).json({
+                error: "Something went wrong!"
+            })
+        }
+
+        let colors = [];
+
+        for (const element of colorPalette) {
+            colors.push(element["hexCode"])
+        }
 
         const user = await jwtVerifier(token);
         console.log("objId " + categoryExists);
@@ -137,8 +151,6 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
             return res.status(404).json({
                 msg: "The current user does not exist!"
             });
-            console.log("5");
-
         } else {
             console.log("6");
 
@@ -148,7 +160,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
                 title,
                 "image": [],
                 "coverImage": "",
-                colorPalette,
+                "colorPalette": colors,
             })
 
             console.log(req.body.image);
