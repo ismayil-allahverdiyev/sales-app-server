@@ -29,14 +29,17 @@ colorRouter.post("/api/color/addNewColors", async (req, res) => {
                 console.log("Existing color col name is " + element["colorName"])
                 console.log("Existing color col hex is " + element["hexCode"])
 
-                const updatedColor = await existingColor.updateOne(
+                existingColor.hexCodes.push(element["hexCode"])
+                await existingColor.save()
 
-                    {
-                        $push: {
-                            hexCodes: element["hexCode"]
-                        },
-                    },
-                )
+                // const updatedColor = await existingColor.updateOne(
+
+                //     {
+                //         $push: {
+                //             hexCodes: element["hexCode"]
+                //         },
+                //     },
+                // )
                 console.log(updatedColor);
             }
         });
