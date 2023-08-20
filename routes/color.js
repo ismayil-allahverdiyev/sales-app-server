@@ -30,7 +30,7 @@ colorRouter.post("/api/color/addNewColors", async (req, res) => {
                 console.log("Existing color col hex is " + element["hexCode"])
 
                 existingColor.hexCodes.push(element["hexCode"])
-                await existingColor.save()
+                existingColor = await existingColor.save()
 
                 // const updatedColor = await existingColor.updateOne(
 
@@ -40,7 +40,7 @@ colorRouter.post("/api/color/addNewColors", async (req, res) => {
                 //         },
                 //     },
                 // )
-                console.log(updatedColor);
+                console.log(existingColor);
             }
         });
 
