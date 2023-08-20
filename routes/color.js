@@ -17,7 +17,9 @@ colorRouter.post("/api/color/addNewColors", async (req, res) => {
 
                 let color = Color({
                     colorName: element["colorName"],
-                    hexCodes: [element["hexCode"]],
+                    hexCodes: [
+                        { "hexCode": element["hexCode"] },
+                    ],
                 })
                 color = await color.save()
                 console.log(color);
