@@ -23,7 +23,7 @@ colorRouter.post("/api/color/addNewColors", async (req, res) => {
                 })
                 color = await color.save()
                 console.log(color);
-            } else if (existingColor && !existingColor.hexCodes.contains(element["hexCode"])) {
+            } else if (existingColor && !existingColor.hexCodes.includes(element["hexCode"])) {
                 const updatedColor = await existingColor.updateOne(
 
                     {
