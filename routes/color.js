@@ -8,7 +8,7 @@ colorRouter.post("/api/color/addNewColors", async (req, res) => {
     try {
         const { colors } = req.body// add color as a list
         //logs updated in multicolor adding function
-        colors.forEach(async element => {
+        for (let element in colors) {
             let existingColor = await Color.findOne({ "colorName": element["colorName"] })
 
             console.log("element is " + element)
@@ -42,7 +42,7 @@ colorRouter.post("/api/color/addNewColors", async (req, res) => {
                 // )
                 console.log(existingColor);
             }
-        });
+        }
 
         return res.status(200).json({
             msg: "Colors added successfully!"
