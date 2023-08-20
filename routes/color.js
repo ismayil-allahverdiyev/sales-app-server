@@ -6,27 +6,33 @@ const colorRouter = express.Router()
 
 colorRouter.post("/api/color/addNewColors", async (req, res) => {
     try {
-        const { colorName, hexCodes } = req.body// add color as a list
+        const { colors } = req.body// add color as a list
 
-        let exsistingColor = await Color.findOne({ colorName })
+        colors.forEach(async element => {
+            let existingColor = await Color.findOne({ colorName: element["colorName"] })
 
-        if (exsistingColor && exsistingColor.hexCodes.contains()) {
-            return res.status(400).json({
-                "msg": "Color already found!",
-            })
-        }
+            if (!existingColor) {
+                let color = Color({
+                    colorName: element["colorName"],
+                    hexCodes: [element["hexCode"]],
+                })
+                color = await color.save()
+                console.log(color);
+            } else if (existingColor && !existingColor.hexCodes.contains(element["hexCode"])) {
+                const updatedColor = await existingColor.updateOne(
 
-        let color = Color({
-            colorName,
-            hexCodes,
-        })
-
-        color = await color.save()
-
-        console.log("COLOR IS " + color)
+                    {
+                        $push: {
+                            hexCodes: element["hexCode"]
+                        },
+                    },
+                )
+                console.log(updatedColor);
+            }
+        });
 
         return res.status(200).json({
-            color
+            msg: "Colors added successfully!"
         })
     } catch (error) {
         res.status(500).json({
