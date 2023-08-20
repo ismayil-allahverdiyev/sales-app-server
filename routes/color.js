@@ -11,8 +11,8 @@ colorRouter.post("/api/color/addNewColors", async (req, res) => {
         colors.forEach(async element => {
             let existingColor = await Color.findOne({ colorName: element["colorName"] })
 
-            console.log("element is " + existingColor)
-            console.log("element name is " + existingColor["colorName"])
+            console.log("element is " + element)
+            console.log("element name is " + element["colorName"])
 
             if (!existingColor) {
                 console.log("Found color is " + existingColor)
