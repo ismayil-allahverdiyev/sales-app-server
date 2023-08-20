@@ -11,7 +11,10 @@ colorRouter.post("/api/color/addNewColors", async (req, res) => {
         colors.forEach(async element => {
             let existingColor = await Color.findOne({ colorName: element["colorName"] })
 
+
             if (!existingColor) {
+                console.log("Found color is " + existingColor)
+
                 let color = Color({
                     colorName: element["colorName"],
                     hexCodes: [element["hexCode"]],
@@ -19,7 +22,13 @@ colorRouter.post("/api/color/addNewColors", async (req, res) => {
                 color = await color.save()
                 console.log(color);
             } else if (existingColor && !existingColor.hexCodes.includes(element["hexCode"])) {
+                console.log("Existing color is " + existingColor)
+                console.log("Existing color hexCodes is " + existingColor.hexCodes)
+                console.log("Existing color col name is " + element["colorName"])
+                console.log("Existing color col hex is " + element["hexCode"])
+
                 const updatedColor = await existingColor.updateOne(
+
                     {
                         $push: {
                             hexCodes: element["hexCode"]
