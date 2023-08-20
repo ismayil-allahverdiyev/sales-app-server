@@ -7,7 +7,7 @@ const colorRouter = express.Router()
 colorRouter.post("/api/color/addNewColors", async (req, res) => {
     try {
         const { colors } = req.body// add color as a list
-
+        //logs updated in multicolor adding function
         colors.forEach(async element => {
             let existingColor = await Color.findOne({ colorName: element["colorName"] })
 
@@ -19,25 +19,21 @@ colorRouter.post("/api/color/addNewColors", async (req, res) => {
 
                 let color = Color({
                     colorName: element["colorName"],
-                    hexCodes: [
-                        { "hexCode": element["hexCode"] },
-                    ],
+                    hexCodes: [element["hexCode"],],
                 })
                 color = await color.save()
                 console.log(color);
-            } else if (existingColor && !existingColor.hexCodes.includes({ "hexCode": element["hexCode"] })) {
-                // console.log("Existing color is " + existingColor)
-                // console.log("Existing color hexCodes is " + existingColor.hexCodes)
-                // console.log("Existing color col name is " + element["colorName"])
-                // console.log("Existing color col hex is " + element["hexCode"])
+            } else if (!existingColor.hexCodes.includes(element["hexCode"])) {
+                console.log("Existing color is " + existingColor)
+                console.log("Existing color hexCodes is " + existingColor.hexCodes)
+                console.log("Existing color col name is " + element["colorName"])
+                console.log("Existing color col hex is " + element["hexCode"])
 
                 const updatedColor = await existingColor.updateOne(
 
                     {
                         $push: {
-                            hexCodes: {
-                                "hexCode": element["hexCode"],
-                            }
+                            hexCodes: element["hexCode"]
                         },
                     },
                 )
