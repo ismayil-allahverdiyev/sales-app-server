@@ -129,7 +129,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
                 msg: "Category does not exist!"
             });
         }
-        console.log("4 " + colorPalette[0]["hexCode"]);
+        console.log("4 " + colorPalette);
         //logs added to check poster adding
         const result = await colorUploader(colorPalette)
 
