@@ -132,6 +132,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         console.log("4 " + colorPalette[0]["colorName"]);
         //logs added to check poster adding
         const result = await colorUploader(colorPalette)
+        console.log("ress " + result);
 
         if (result == false) {
             return res.status(500).json({
