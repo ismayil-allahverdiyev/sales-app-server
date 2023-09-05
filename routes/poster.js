@@ -141,7 +141,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         }
 
         let colors = [];
-        console.log("ress " + result);
+        console.log("ress " + colorPalette);
 
         for (const element of colorPalette) {
                                             console.log("ress 1111");
