@@ -141,13 +141,18 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         }
 
         let colors = [];
+        console.log("ress " + result);
 
         for (const element of colorPalette) {
+                    console.log("ress " + element["hexCode"]);
+
             colors.push(element["hexCode"])
         }
+                console.log("ress " + result);
+
 
         const user = await jwtVerifier(token);
-        console.log("objId " + categoryExists);
+        console.log("objId " + user);
         if (!user) {
             return res.status(404).json({
                 msg: "The current user does not exist!"
