@@ -3,6 +3,7 @@ const Color = require("../models/color_model");
 const colorUploader = async (colors) => {
     try {
         for (const element of colors) {
+            console.log(element)
             let existingColor = await Color.findOne({ "colorName": element["colorName"] })
 
             if (!existingColor) {
