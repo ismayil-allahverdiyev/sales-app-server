@@ -156,7 +156,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         }
 
         const user = await jwtVerifier(token);
-        console.log("objId " + user);
+
         if (!user) {
             return res.status(404).json({
                 msg: "The current user does not exist!"
