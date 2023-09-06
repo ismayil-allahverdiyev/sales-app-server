@@ -148,14 +148,12 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         for (const element of colorPalette) {
                                             console.log("ress 1111");
 
-                                console.log("ress " + colorPalette);
+                                console.log("ress " + JSON.stringify(colorPalette));
 
-                    console.log("ress " + element["hexCode"]);
+                    console.log("ress " + JSON.stringify(element["hexCode"]));
 
-            colors.push(element["hexCode"])
+            colors.push(JSON.stringify(element["hexCode"]))
         }
-                console.log("ress " + result);
-
 
         const user = await jwtVerifier(token);
         console.log("objId " + user);
