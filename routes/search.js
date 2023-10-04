@@ -1,6 +1,7 @@
 const express = require("express");
 const Category = require("../models/category_model");
 const Poster = require("../models/poster_model");
+const Color = require("../models/color_model");
 const { jwtVerifier } = require("../controllers/auth_controller");
 
 const searchRouter = express.Router();
@@ -60,6 +61,7 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
         const keyword = req.query.keyword;
         const minPrice = req.query.minPrice;
         const maxPrice = req.query.maxPrice;
+        const colorList = req.query.colorList;
 
         const user = await jwtVerifier(token)
         if(!user){
@@ -70,7 +72,7 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
 
         const priceFilter = {};
 
-        if (minPrice != undefined && maxPrice != undefined) {
+        if (minPrice !== undefined && maxPrice !== undefined) {
             console.log("HEHE Both not undefined")
             priceFilter.price = { $gte: minPrice, $lte: maxPrice };
         } else if (minPrice !== undefined) {
@@ -79,9 +81,14 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
             priceFilter.price = { $lte: maxPrice };
         }
 
+        var colors = await Color.find({
+            colorName: {$regex: typeof colorList === undefined || colorList == null ? "" : colorList.join('|'), $options: "i"},
+        })
+        console.log("Colors length is " + colors.size)
+
         var posters = await Poster.find({
-            category: {$regex: typeof categories == undefined || categories == null ? "" : categories.join('|'), $options: "i"},
-            title: {$regex: typeof keyword == undefined || keyword == null ? "" : keyword, $options: "i"},
+            category: {$regex: typeof categories === undefined || categories == null ? "" : categories.join('|'), $options: "i"},
+            title: {$regex: typeof keyword === undefined || keyword == null ? "" : keyword, $options: "i"},
             ...priceFilter,
         })
         return res.status(200).json(posters)
