@@ -36,6 +36,7 @@ favouriteRouter.post("/api/addToFavourites", async (req, res) => {
                         "image": poster.image[0],
                         "price": poster.price,
                         "title": poster.title,
+                        "colorPalette": poster.colorPalette,
                     },
                 }
             }

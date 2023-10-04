@@ -16,12 +16,10 @@ const videoUrl = "https://aisha-sales-app.herokuapp.com/api/videos/"
 const imageUrl = "https://aisha-sales-app.herokuapp.com/api/posterImage/"
 
 
-posterRouter.get("/api/getAllPostersByTitle", async (req, res) => {
-    try {
-        const { category } = req.body;
-        console.log(category);
 
-        const poster = await Poster.find({ category });
+posterRouter.get("/api/getAllPosters", async (req, res) => {
+    try {
+        const poster = await Poster.find({});
         console.log(poster);
         if (!poster) {
             return res.status(404).json({
@@ -38,9 +36,12 @@ posterRouter.get("/api/getAllPostersByTitle", async (req, res) => {
     }
 })
 
-posterRouter.get("/api/getAllPosters", async (req, res) => {
+posterRouter.get("/api/getAllPostersByTitle", async (req, res) => {
     try {
-        const poster = await Poster.find({});
+        const { category } = req.body;
+        console.log(category);
+
+        const poster = await Poster.find({ category });
         console.log(poster);
         if (!poster) {
             return res.status(404).json({
@@ -89,7 +90,6 @@ posterRouter.post("/api/getPostersByCategory", async (req, res) => {
         })
     }
 })
-
 
 posterRouter.get("/api/poster/getPosterById", async (req, res) => {
     try {
