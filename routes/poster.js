@@ -132,6 +132,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         console.log("4 " + colorPalette[0]["colorName"]);
         //logs added to check poster adding
         const result = await colorUploader(colorPalette)
+        console.log("ress " + result);
 
         if (result == false) {
             return res.status(500).json({
@@ -140,13 +141,22 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         }
 
         let colors = [];
+                console.log("another  " + colorPalette[0]["colorName"]);
+
+        console.log("ress " + JSON.stringify(colorPalette));
 
         for (const element of colorPalette) {
-            colors.push(element["hexCode"])
+                                            console.log("ress 1111");
+
+                                console.log("ress " + JSON.stringify(colorPalette));
+
+                    console.log("ress " + JSON.stringify(element["hexCode"]));
+
+            colors.push(JSON.stringify(element["hexCode"]))
         }
 
         const user = await jwtVerifier(token);
-        console.log("objId " + categoryExists);
+
         if (!user) {
             return res.status(404).json({
                 msg: "The current user does not exist!"
