@@ -5,6 +5,7 @@ const multer = require("multer")
 const {GridFsStorage} = require('multer-gridfs-storage');
 
 const DB = process.env.URL;
+// const DB = "http://localhost.com";
 
 const storage = new GridFsStorage({
   url: DB,

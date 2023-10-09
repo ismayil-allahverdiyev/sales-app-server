@@ -84,11 +84,19 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
         var colors = await Color.find({
             colorName: {$regex: typeof colorList === undefined || colorList == null ? "" : colorList.join('|'), $options: "i"},
         })
-        console.log("Colors length is " + colors.size)
+
+        var hexcodes = []
+
+        for(let element of colors){
+            hexcodes.push(element.hexCodes)
+        }
+
+        hexcodes = hexcodes.flat().map(element => '"' + element + '"')
 
         var posters = await Poster.find({
-            category: {$regex: typeof categories === undefined || categories == null ? "" : categories.join('|'), $options: "i"},
+            category: {$regex: typeof categories === undefined || categories == null ? "" : categories.join('|'), $options: "i"},// regex is to like an and it searched for all the queries if it has any or the categories in it
             title: {$regex: typeof keyword === undefined || keyword == null ? "" : keyword, $options: "i"},
+            colorPalette: {$in: typeof hexcodes === undefined || hexcodes == null ? [] :  hexcodes},
             ...priceFilter,
         })
         return res.status(200).json(posters)

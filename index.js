@@ -1,6 +1,7 @@
 const PORT = process.env.PORT || 3000;
 
 const DB = process.env.URL;
+// const DB = "mongodb+srv://isi:@clusteraisha.fgl4fve.mongodb.net/";
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -53,6 +54,6 @@ app.get("/hi", (req, res) => {
   res.send("aaa")
 })
 
-app.listen(PORT, "", function () {
+app.listen(PORT, "192.168.1.12", function () {
   console.log(`Connected to ${PORT}`);
 });
