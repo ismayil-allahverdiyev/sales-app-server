@@ -5,7 +5,6 @@ const DB = process.env.URL;
 
 const express = require("express");
 const mongoose = require("mongoose");
-var Grid = require('gridfs-stream');
 
 const authRouter = require("./routes/auth.js");
 const posterRouter = require("./routes/poster.js");
@@ -50,10 +49,10 @@ app.use(favouriteRouter);
 app.use(searchRouter);
 app.use(colorRouter);
 
-app.get("/hi", (req, res) => {
+app.get("/checker", (req, res) => {
   res.send("aaa")
 })
 
-app.listen(PORT, "192.168.1.12", function () {
+app.listen(PORT, "", function () {
   console.log(`Connected to ${PORT}`);
 });
