@@ -53,6 +53,6 @@ app.get("/checker", (req, res) => {
   res.send("aaa")
 })
 
-app.listen(PORT, "192.168.0.169", function () {
+app.listen(PORT, "", function () {
   console.log(`Connected to ${PORT}`);
 });
