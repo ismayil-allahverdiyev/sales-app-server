@@ -8,7 +8,6 @@ const searchRouter = express.Router();
 
 searchRouter.get("/api/search", async (req, res) => {
     try{
-        const token = req.query.token;
         const keyword = req.query.keyword;
 
         const user = await jwtVerifier(token)
@@ -99,6 +98,8 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
             colorPalette: {$in: typeof hexcodes === undefined || hexcodes == null ? [] :  hexcodes},
             ...priceFilter,
         })
+        console.log(categories)
+        console.log(colorList)
         return res.status(200).json(posters)
     }catch(e){
         return res.status(500).json({
