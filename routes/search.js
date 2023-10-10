@@ -81,7 +81,7 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
         }
 
         var colors = await Color.find({
-            colorName: {$regex: typeof colorList === undefined || colorList == null ? "" : typeof colorList === String ? colorList : colorList.join('|'), $options: "i"},
+            colorName: {$regex: typeof colorList === undefined || colorList == null ? "" : typeof colorList === "string" ? colorList : colorList.join('|'), $options: "i"},
         })
 
         var hexcodes = []
