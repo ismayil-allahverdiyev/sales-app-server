@@ -93,7 +93,7 @@ searchRouter.get("/api/filteredSearch", async (req, res) => {
         hexcodes = hexcodes.flat().map(element => '"' + element + '"')
 
         var posters = await Poster.find({
-            category: {$regex: typeof categories === undefined || categories == null ? "" : categories.join('|'), $options: "i"},// regex is to like an and it searched for all the queries if it has any or the categories in it
+            category: {$regex: typeof categories === undefined || categories == null ? "" : typeof categories  === "string" ? categories : categories.join('|'), $options: "i"},// regex is to like an and it searched for all the queries if it has any or the categories in it
             title: {$regex: typeof keyword === undefined || keyword == null ? "" : keyword, $options: "i"},
             colorPalette: {$in: typeof hexcodes === undefined || hexcodes == null ? [] :  hexcodes},
             ...priceFilter,
