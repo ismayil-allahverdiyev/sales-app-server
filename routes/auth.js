@@ -33,7 +33,7 @@ authRouter.post("/api/sign-up", async (req, res) => {
         res.status(500).json({
             error: e.message
         })
-    };
+    }
 })
 
 authRouter.post("/api/sign-in", async (req, res) =>  {
