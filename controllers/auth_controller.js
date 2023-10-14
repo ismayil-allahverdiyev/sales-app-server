@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const jwtVerifier = async (token) => {
-        console.log("Verifying " + token)
+    console.log("Verifying " + token)
     const verified = await jwt.verify(token, "passwordKey");
     console.log("Verified id is " + verified.id)
     const user = await User.findById(verified.id);
