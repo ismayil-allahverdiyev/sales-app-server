@@ -11,7 +11,11 @@ profileRouter.get("/api/profile/getProfileInfo", async (req, res) => {
         const user = await jwtVerifier(token)
 
         if (user) {
-            res.status(200).json(user)
+            res.status(200).json({
+                name: user.name,
+                imageUrl: user.imageUrl,
+                type: user.type,
+            })
         } else {
             res.status(400).json({
                 msg: "User not found",
