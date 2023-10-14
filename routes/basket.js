@@ -30,6 +30,8 @@ basketRouter.post("/api/basket/addToBasket", async (req, res) => {
             id: poster.id,
             description: poster.title,
             price: poster.price,
+            image:poster.image,
+            colorPalette:poster.colorPalette,
         }
         
         for(const basketPoster of user["basket"]){

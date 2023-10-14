@@ -95,7 +95,6 @@ favouriteRouter.get("/api/getFavourites", async (req, res) => {
                 "msg": "User not found!",
             })
         }
-        console.log(user.favourites)
         return res.json(user.favourites)
     }catch(e){
         return res.status(500).json({
