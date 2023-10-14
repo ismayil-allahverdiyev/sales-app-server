@@ -15,6 +15,7 @@ const basketRouter = require("./routes/basket.js");
 const favouriteRouter = require("./routes/favourite.js");
 const searchRouter = require("./routes/search.js");
 const colorRouter = require("./routes/color.js");
+const profileRouter = require("./routes/profile");
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use(basketRouter);
 app.use(favouriteRouter);
 app.use(searchRouter);
 app.use(colorRouter);
+app.use(profileRouter);
 
 app.get("/checker", (req, res) => {
   res.send("aaa")

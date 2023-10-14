@@ -24,3 +24,5 @@ profileRouter.get("/api/profile/getProfileInfo", async (req, res) => {
     }
 
 })
+
+module.exports = profileRouter
