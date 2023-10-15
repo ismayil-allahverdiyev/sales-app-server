@@ -314,9 +314,9 @@ posterRouter.post("/api/addVideoPoster", uploadGfs.single("video"), async (req, 
             "image": ""
         })
         console.log(req.body.video);
-        console.log(url+req.file.filename)
+        console.log(videoUrl+req.file.filename)
         if(req.file){
-            poster.image = url+req.file.filename
+            poster.image = videoUrl+req.file.filename
         }
         poster = await poster.save();
         console.log("Poster is " + poster);
