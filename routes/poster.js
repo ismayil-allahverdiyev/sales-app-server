@@ -9,6 +9,7 @@ const posterImageUploadGfs = require("../middlewares/posterImageGfsUpload");
 const Category = require("../models/category_model.js");
 const { jwtVerifier } = require("../controllers/auth_controller.js");
 const { colorUploader } = require("../controllers/color_controller.js");
+const uploadGfs = require("../middlewares/uploadGfs");
 
 const posterRouter = express.Router();
 
@@ -237,18 +238,74 @@ posterRouter.get("/api/posterImage/:filename", (req, res) => {
     }
 })
 
+posterRouter.get("/api/files/:filename", (req, res) => {
+    try{
+        console.log("file search func")
+        const parFilename = req.params.filename
+        console.log(parFilename)
+
+        const file = index.gfs.find({filename: parFilename}).toArray((err, files) =>{
+            if(err){
+                res.status(200).send(err);
+                return;
+            }
+            if (!files) {
+                res.status(404).send("No video uploaded!");
+                return;
+            }
+            console.log(files[0].length + "");
+
+
+            // Create response headers
+            const range = files[0].length; //getting the length of the first found file
+            const videoSize = files[0].length;
+            const start = 0;
+
+            const end = videoSize - 1;
+
+            const contentLength = end - start + 1;
+
+            console.log(videoSize+" videoSize"+start+" start")
+
+            const headers = {
+                "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+                "Accept-Ranges": "bytes",
+                "Content-Length": contentLength,
+                "Content-Type": "video/mp4",
+            };
+
+            console.log(" 1 ")
+            // HTTP Status 206 for Partial Content
+            res.writeHead(206, headers);
+            console.log(" 2 ")
+            console.log(" 3 ")
+            const downloadStream = index.gfs.openDownloadStreamByName(parFilename, {
+                start
+            });
+            console.log(downloadStream)
+            console.log(" 4 ")
+            // Finally pipe video to response
+            downloadStream.pipe(res);
+            console.log(" 5 ")
+        });
+    }catch(e){
+        console.log(e)
+        res.send(e)
+    }
+})
+
 posterRouter.post("/api/addVideoPoster", uploadGfs.single("video"), async (req, res)=>{
+    console.log("Add video func")
     const{userId, categorie, price, title} = req.body;
     console.log(userId);
     const objId = mongoose.Types.ObjectId(userId)
-    const user = await User.findById(userId);
+    //const user = await User.findById(userId);
     console.log(objId);
-    if(1==0){
+    if(!userId){//check user here
         res.status(404).json({
             msg: "The current user does not exist!"
         });
     }else{
-        console.log(user);
         let poster = Poster({
             userId,
             categorie,
@@ -257,14 +314,13 @@ posterRouter.post("/api/addVideoPoster", uploadGfs.single("video"), async (req, 
             "image": ""
         })
         console.log(req.body.video);
-        console.log(videoUrl+req.file.filename)
+        console.log(url+req.file.filename)
         if(req.file){
-            poster.image = videoUrl+req.file.filename
+            poster.image = url+req.file.filename
         }
         poster = await poster.save();
         console.log("Poster is " + poster);
         res.json(poster);
     }
 })
-
 module.exports = posterRouter;
