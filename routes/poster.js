@@ -237,34 +237,34 @@ posterRouter.get("/api/posterImage/:filename", (req, res) => {
     }
 })
 
-// posterRouter.post("/api/addVideoPoster", uploadGfs.single("video"), async (req, res)=>{
-//     const{userId, categorie, price, title} = req.body;
-//     console.log(userId);
-//     const objId = mongoose.Types.ObjectId(userId)
-//     const user = await User.findById(userId);
-//     console.log(objId);
-//     if(1==0){
-//         res.status(404).json({
-//             msg: "The current user does not exist!"
-//         });
-//     }else{
-//         console.log(user);
-//         let poster = Poster({
-//             userId,
-//             categorie, 
-//             price, 
-//             title,
-//             "image": ""
-//         })
-//         console.log(req.body.video);
-//         console.log(videoUrl+req.file.filename)
-//         if(req.file){
-//             poster.image = videoUrl+req.file.filename
-//         }
-//         poster = await poster.save();
-//         console.log("Poster is " + poster);
-//         res.json(poster);
-//     }
-// })
+posterRouter.post("/api/addVideoPoster", uploadGfs.single("video"), async (req, res)=>{
+    const{userId, categorie, price, title} = req.body;
+    console.log(userId);
+    const objId = mongoose.Types.ObjectId(userId)
+    const user = await User.findById(userId);
+    console.log(objId);
+    if(1==0){
+        res.status(404).json({
+            msg: "The current user does not exist!"
+        });
+    }else{
+        console.log(user);
+        let poster = Poster({
+            userId,
+            categorie,
+            price,
+            title,
+            "image": ""
+        })
+        console.log(req.body.video);
+        console.log(videoUrl+req.file.filename)
+        if(req.file){
+            poster.image = videoUrl+req.file.filename
+        }
+        poster = await poster.save();
+        console.log("Poster is " + poster);
+        res.json(poster);
+    }
+})
 
 module.exports = posterRouter;

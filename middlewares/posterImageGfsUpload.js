@@ -28,5 +28,6 @@ const storage = new GridFsStorage({
     });
   }
 });
+
 const posterImageUploadGfs = multer({ storage });
 module.exports = posterImageUploadGfs
