@@ -17,7 +17,7 @@ const imageUrl = "https://aisha-sales-app.herokuapp.com/api/posterImage/"
 
 posterRouter.get("/api/getAllPosters", async (req, res) => {
     try {
-        const poster = await Poster.find.sort([['_id', -1]]);
+        const poster = await Poster.find({}).sort('-_id');
         console.log(poster);
         if (!poster) {
             return res.status(404).json({
