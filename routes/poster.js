@@ -1,6 +1,5 @@
 const express = require("express");
 const Poster = require("../models/poster_model.js");
-const User = require("../models/user.js");
 const mongoose = require("mongoose")
 
 const index = require("../index")
@@ -16,11 +15,9 @@ const posterRouter = express.Router();
 const videoUrl = "https://aisha-sales-app.herokuapp.com/api/videos/"
 const imageUrl = "https://aisha-sales-app.herokuapp.com/api/posterImage/"
 
-
-
 posterRouter.get("/api/getAllPosters", async (req, res) => {
     try {
-        const poster = await Poster.find({});
+        const poster = await Poster.find.sort([['_id', -1]]);
         console.log(poster);
         if (!poster) {
             return res.status(404).json({
@@ -135,7 +132,7 @@ posterRouter.post("/api/addPoster", posterImageUploadGfs.array("image"), async (
         const result = await colorUploader(colorPalette)
         console.log("ress " + result);
 
-        if (result == false) {
+        if (!result) {
             return res.status(500).json({
                 error: "Something went wrong!"
             })
@@ -228,7 +225,7 @@ posterRouter.get("/api/posterImage/:filename", (req, res) => {
 
         const file = index.gfs.openDownloadStreamByName(parFilename);
         file.on("error", function (err) {
-            return res.send("No image found with the given id!")
+            return res.send("No image found with the given id!" + err)
         });
         file.pipe(res)
     } catch (e) {
@@ -244,7 +241,7 @@ posterRouter.get("/api/files/:filename", (req, res) => {
         const parFilename = req.params.filename
         console.log(parFilename)
 
-        const file = index.gfs.find({filename: parFilename}).toArray((err, files) =>{
+        index.gfs.find({filename: parFilename}).toArray((err, files) =>{
             if(err){
                 res.status(200).send(err);
                 return;
@@ -257,7 +254,7 @@ posterRouter.get("/api/files/:filename", (req, res) => {
 
 
             // Create response headers
-            const range = files[0].length; //getting the length of the first found file
+            // const range = files[0].length; //getting the length of the first found file
             const videoSize = files[0].length;
             const start = 0;
 
