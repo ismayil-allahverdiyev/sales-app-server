@@ -38,7 +38,7 @@ posterRouter.get("/api/getAllPosters", async (req, res) => {
         const posters = await Poster.find({}).sort('-_id');
 
         for(const poster of posters){
-            const displayPosterModel = DisplayPosterModel(poster["category"], poster["title"], poster["coverImage"], false, poster["colorPalette"])
+            const displayPosterModel = DisplayPosterModel.constructor(poster["category"], poster["title"], poster["coverImage"], false, poster["colorPalette"])
             displayPosterModel.printData()
         }
 
