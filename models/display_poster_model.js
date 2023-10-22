@@ -1,4 +1,4 @@
-export default class DisplayPosterModel{
+module.exports = class DisplayPosterModel{
     constructor(category, title, image, isFavoured, colorPalette) {
         this._category = category;
         this._title = title;
