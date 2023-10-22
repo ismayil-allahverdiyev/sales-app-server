@@ -47,8 +47,7 @@ posterRouter.get("/api/getAllPosters", async (req, res) => {
         for(const poster of posters){
 
             let isFavoured = userFavourites.includes(poster["_id"]);
-            for(const userFav in userFavourites){
-                console.log(userFav)
+            for(const userFav of userFavourites){
                 if(userFav == poster["_id"]){
                     isFavoured = true;
                     break;
