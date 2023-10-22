@@ -49,6 +49,7 @@ posterRouter.get("/api/getAllPosters", async (req, res) => {
                 msg: "List is empty!"
             });
         }
+
         return res.json(
             posters
         );
