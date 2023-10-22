@@ -17,15 +17,39 @@ const imageUrl = "https://aisha-sales-app.herokuapp.com/api/posterImage/"
 
 posterRouter.get("/api/getAllPosters", async (req, res) => {
     try {
-        const poster = await Poster.find({}).sort('-_id');
+        const token = req.query.token;
+
+        const user = await jwtVerifier(token)
+
+        if(!user){
+            return res.status(404).json({
+                "msg": "User not found!",
+            })
+        }
+
+        let userFavourites = [];
+
+        for(const favourite of user.favourites){
+            userFavourites.push(favourite["id"]);
+        }
+
+        let result = [];
+
+        const posters = await Poster.find({}).sort('-_id');
+
+        for(const poster of posters){
+            const displayPosterModel = DisplayPosterModel(poster["category"], poster["title"], poster["coverImage"], false, poster["colorPalette"])
+            displayPosterModel.printData()
+        }
+
         console.log(poster);
-        if (!poster) {
+        if (!posters) {
             return res.status(404).json({
                 msg: "List is empty!"
             });
         }
         return res.json(
-            poster
+            posters
         );
     } catch (e) {
         return res.status(500).json({
