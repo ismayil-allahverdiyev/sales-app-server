@@ -49,7 +49,7 @@ class DisplayPosterModel{
     }
 
     printData() {
-        print(this._category)
-        print(this._title)
+        console.log(this._category)
+        console.log(this._title)
     }
 }
