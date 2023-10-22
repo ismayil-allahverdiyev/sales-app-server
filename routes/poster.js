@@ -45,7 +45,14 @@ posterRouter.get("/api/getAllPosters", async (req, res) => {
         }
 
         for(const poster of posters){
+
             let isFavoured = userFavourites.includes(poster["_id"]);
+            for(const userFav in userFavourites){
+                if(userFav == poster["_id"]){
+                    isFavoured = true;
+                    break;
+                }
+            }
             console.log(userFavourites + " " + poster["_id"] + " " + isFavoured)
 
             const displayPosterModel = new DisplayPosterModel(poster["category"], poster["title"], poster["coverImage"], isFavoured, poster["colorPalette"])
