@@ -46,6 +46,7 @@ posterRouter.get("/api/getAllPosters", async (req, res) => {
 
         for(const poster of posters){
             let isFavoured = userFavourites.includes(poster["_id"]);
+            console.log(userFavourites + " " + poster["_id"])
 
             const displayPosterModel = new DisplayPosterModel(poster["category"], poster["title"], poster["coverImage"], isFavoured, poster["colorPalette"])
             result.push(displayPosterModel)
