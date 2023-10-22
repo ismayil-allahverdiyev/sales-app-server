@@ -38,20 +38,23 @@ posterRouter.get("/api/getAllPosters", async (req, res) => {
 
         const posters = await Poster.find({}).sort('-_id');
 
-        for(const poster of posters){
-            const displayPosterModel = new DisplayPosterModel(poster["category"], poster["title"], poster["coverImage"], false, poster["colorPalette"])
-            displayPosterModel.printData()
-        }
-
-        console.log(poster);
         if (!posters) {
             return res.status(404).json({
                 msg: "List is empty!"
             });
         }
 
+        for(const poster of posters){
+            let isFavoured = userFavourites.includes(poster["_id"]);
+
+            const displayPosterModel = new DisplayPosterModel(poster["category"], poster["title"], poster["coverImage"], isFavoured, poster["colorPalette"])
+            result.push(displayPosterModel)
+        }
+
+        console.log(result);
+
         return res.json(
-            posters
+            result
         );
     } catch (e) {
         return res.status(500).json({
