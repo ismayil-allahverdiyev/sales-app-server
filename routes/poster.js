@@ -9,6 +9,7 @@ const Category = require("../models/category_model.js");
 const { jwtVerifier } = require("../controllers/auth_controller.js");
 const { colorUploader } = require("../controllers/color_controller.js");
 const uploadGfs = require("../middlewares/uploadGfs");
+const DisplayPosterModel = require("../models/display_poster_model")
 
 const posterRouter = express.Router();
 
@@ -38,7 +39,7 @@ posterRouter.get("/api/getAllPosters", async (req, res) => {
         const posters = await Poster.find({}).sort('-_id');
 
         for(const poster of posters){
-            const displayPosterModel = DisplayPosterModel.constructor(poster["category"], poster["title"], poster["coverImage"], false, poster["colorPalette"])
+            const displayPosterModel = new DisplayPosterModel(poster["category"], poster["title"], poster["coverImage"], false, poster["colorPalette"])
             displayPosterModel.printData()
         }
 
